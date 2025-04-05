@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bg_color01"
+    android:padding="32dp">
+
+    <!-- 앱 이름 -->
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로고or앱이름"
+        android:fontFamily="@font/bmjua"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3" />
+
+    <!-- 간격 -->
+    <View android:layout_height="40dp" android:layout_width="match_parent"/>
+
+    <!-- 아이디 입력 -->
+    <EditText
+        android:background="@drawable/bt_color02_rounded"
+        android:id="@+id/editTextId"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bmjua"
+        android:hint="아이디"
+        android:paddingHorizontal="16dp"
+        />
+
+    <View android:layout_height="16dp" android:layout_width="match_parent"/>
+
+    <!-- 비밀번호 입력 -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bmjua"
+        android:hint="비밀번호"
+        android:background="@drawable/bt_color02_rounded"
+        android:inputType="textPassword"
+        android:paddingHorizontal="16dp" />
+
+    <View android:layout_height="24dp" android:layout_width="match_parent"/>
+
+    <!-- 로그인 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bt_color02_rounded"
+        android:fontFamily="@font/bmjua"
+        android:text="로그인"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+</LinearLayout>
