@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- 화분 -->
+  <path
+      android:fillColor="#DDDDDD"
+      android:pathData="M7,19L7,19c0,0 0,2 5,2s5,-2 5,-2v-4H7V19z"/>
+  <path
+      android:fillColor="#BBBBBB"
+      android:pathData="M7,15l10,0l1,-3l-12,0z"/>
+  
+  <!-- 식물 줄기와 잎 -->
+  <path
+      android:fillColor="#4CAF50"
+      android:pathData="M12,3c0,0 -1.5,3 -1.5,5S12,11 12,11s1.5,-1 1.5,-3S12,3 12,3z"/>
+  <path
+      android:fillColor="#388E3C"
+      android:pathData="M12,10c0,0 -2.5,2 -2.5,5s2.5,3 2.5,3s2.5,0 2.5,-3S12,10 12,10z"/>
+  <path
+      android:fillColor="#81C784"
+      android:pathData="M9.5,12c0,0 -2,1 -2,3s2,2 2,2s1.5,0 1.5,-2S9.5,12 9.5,12z"/>
+  <path
+      android:fillColor="#81C784"
+      android:pathData="M14.5,14c0,0 1.5,-1 1.5,-2s-1.5,-1 -1.5,-1s-1,0 -1,1S14.5,14 14.5,14z"/>
+</vector> 
