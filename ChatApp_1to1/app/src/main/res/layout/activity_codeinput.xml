@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="#FFF5BC"
     tools:context=".PlantCareActivity">
 
@@ -41,68 +41,85 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="350dp"
-        android:layout_height="380dp"
+    <RelativeLayout
+        android:id="@+id/codeInputBox"
+        android:layout_width="320dp"
+        android:layout_height="270dp"
         android:background="@drawable/bt_green_rounded"
-        tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="143dp">
+        android:clipToPadding="false"
+        android:elevation="4dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerBackground">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="305dp"
+        <!-- 닫기 버튼 (X) -->
+        <TextView
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="16dp">
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="8dp"
+            android:text="X"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/myId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="(내 코드 들어갈 곳)"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!-- 코드 입력 텍스트 -->
+        <TextView
+            android:id="@+id/enter_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/close_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="코드를 입력해주세요"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imgbtn_copy"
-                android:layout_width="52dp"
-                android:layout_height="55dp"
-                android:layout_marginEnd="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/myId"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_copy" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <!-- 코드 입력창 -->
         <EditText
-            android:id="@+id/codeInputBox"
+            android:id="@+id/code_input"
             android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@id/enter_code_text"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bt_color02_rounded"
+            android:gravity="center"
+            android:hint="1234"
+            android:inputType="number" />
+
+        <!-- 내 코드 텍스트 -->
+        <TextView
+            android:id="@+id/my_code_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:layout_editor_absoluteX="-16dp" />
+            android:layout_below="@id/code_input"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="내 코드"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/codeInputBox"
-            tools:layout_editor_absoluteX="27dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- 연결 버튼 -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/connect_button"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/my_code_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bt_green02_rounded"
+            android:backgroundTint="@null"
+            android:text="연 결"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            style="@style/Widget.AppCompat.Button" />
 
-    <!-- 코드 입력 부분 -->
-
-
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
