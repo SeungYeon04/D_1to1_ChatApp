@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 박스 채우는 색 (초록색으로) -->
+    <solid android:color="#00C903" />
+
+    <!-- 모서리를 둥글게 -->
+    <corners android:radius="30dp" />
+
+</shape>
