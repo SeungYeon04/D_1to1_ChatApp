@@ -28,7 +28,7 @@
     <!-- 아이디 입력 -->
     <EditText
         android:background="@drawable/bt_color02_rounded"
-        android:id="@+id/editTextId"
+        android:id="@+id/LoginTextId"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/bmjua"
@@ -40,7 +40,7 @@
 
     <!-- 비밀번호 입력 -->
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/LoginTextPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/bmjua"
@@ -53,7 +53,7 @@
 
     <!-- 로그인 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
+        android:id="@+id/Loginbtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bt_color02_rounded"
@@ -63,7 +63,7 @@
         android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/signup_text"
+        android:id="@+id/signupMove_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bmjua"
@@ -72,6 +72,7 @@
         android:shadowDy="2"
         android:shadowRadius="3"
         android:textStyle="bold"
+        android:clickable="true"
         android:text="계정이 없으신가요?"
         android:textColor="#FFFFFF"
         android:textSize="19sp" />
