@@ -28,7 +28,7 @@
     <!-- 아이디 입력 -->
     <EditText
         android:background="@drawable/bt_color02_rounded"
-        android:id="@+id/LoginTextId"
+        android:id="@+id/SignupTextId"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/bmjua"
@@ -40,7 +40,7 @@
 
     <!-- 비밀번호 입력 -->
     <EditText
-        android:id="@+id/LoginTextPassword"
+        android:id="@+id/SignupPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/bmjua"
@@ -51,30 +51,29 @@
 
     <View android:layout_height="24dp" android:layout_width="match_parent"/>
 
-    <!-- 로그인 버튼 -->
+    <!-- 회원가입 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/Loginbtn"
+        android:id="@+id/btnSignup"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bt_color02_rounded"
         android:fontFamily="@font/bmjua"
-        android:text="로그인"
+        android:text="회원가입"
         android:textStyle="bold"
         android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/signupMove_text"
+        android:id="@+id/login_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bmjua"
         android:shadowColor="#80000000"
         android:shadowDx="2"
         android:shadowDy="2"
-        android:shadowRadius="3"
         android:textStyle="bold"
+        android:shadowRadius="3"
         android:clickable="true"
-        android:text="계정이 없으신가요?"
+        android:text="로그인 하러가기"
         android:textColor="#FFFFFF"
         android:textSize="19sp" />
-
 </LinearLayout>
