@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "136001185935",
+    "project_id": "cap-1to1chatapp",
+    "storage_bucket": "cap-1to1chatapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136001185935:android:436161cf79b32da166a8fa",
+        "android_client_info": {
+          "package_name": "com.example.chatapp_1to1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5ZojF1fLBC6GmUKws-j-hf_0-I0jWlXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
