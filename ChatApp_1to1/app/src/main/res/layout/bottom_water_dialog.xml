@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <!-- 닫기 버튼 (화살표) -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:contentDescription="닫기"
+        android:src="@drawable/icon_back" />
+
+
+    <!-- 2행 3열 그리드 -->
+    <GridLayout
+        android:id="@+id/imageGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnClose"
+        android:layout_marginTop="16dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:useDefaultMargins="true">
+
+        <!-- 녹색 박스 6개 -->
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/img3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/img4"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/img5"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/img6"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/green_round_rect"
+            android:scaleType="centerCrop" />
+    </GridLayout>
+</RelativeLayout>
