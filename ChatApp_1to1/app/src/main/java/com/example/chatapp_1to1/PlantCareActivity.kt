@@ -2,12 +2,14 @@ package com.example.chatapp_1to1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 
 class PlantCareActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +23,17 @@ class PlantCareActivity : AppCompatActivity() {
         val nutrientButton = findViewById<ImageButton>(R.id.btnNutrient)
         val moreButton = findViewById<ImageButton>(R.id.btnMore)
         val speechBubble = findViewById<ImageView>(R.id.ivSpeechBubble)
+
+        FirebaseAuth.getInstance().signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    Log.d("Firebase", "Login success: ${user?.uid}")
+                } else {
+                    Log.e("Firebase", "Login failed", task.exception)
+                }
+            }
+
 
         // 버튼 클릭 이벤트 설정
         waterButton.setOnClickListener {

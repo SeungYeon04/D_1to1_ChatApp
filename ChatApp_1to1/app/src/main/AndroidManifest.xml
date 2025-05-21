@@ -42,7 +42,15 @@
             android:exported="true" />
 
         <!-- 코드 페이지 -->
-        <activity android:name=".CodeInputActivity" />
+        <activity
+            android:name=".CodeInputActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 
