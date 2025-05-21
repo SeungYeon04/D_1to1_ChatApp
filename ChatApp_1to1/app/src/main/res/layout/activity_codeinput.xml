@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF5BC"
-    tools:context=".PlantCareActivity">
+    tools:context=".CodeInputActivity">
 
     <!-- 상단 헤더 - 녹색 배경 -->
     <View
@@ -79,9 +78,9 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- 코드 입력창 -->
+        <!-- 코드 입력창 - ID 변경 -->
         <EditText
-            android:id="@+id/code_input"
+            android:id="@+id/etCodeInput"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_below="@id/enter_code_text"
@@ -96,7 +95,7 @@
             android:id="@+id/my_code_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/code_input"
+            android:layout_below="@id/etCodeInput"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
             android:text="내 코드"
@@ -104,9 +103,9 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- 연결 버튼 -->
+        <!-- 연결 버튼 - ID 변경 -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/connect_button"
+            android:id="@+id/btnJoin"
             android:layout_width="100dp"
             android:layout_height="45dp"
             android:layout_below="@id/my_code_text"
