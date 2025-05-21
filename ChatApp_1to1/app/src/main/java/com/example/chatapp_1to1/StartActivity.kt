@@ -15,7 +15,7 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start); // start 화면 xml 필요
+        setContentView(R.layout.activity_start);
         enableEdgeToEdge();
 
         startButton = findViewById<Button>(R.id.startButton);
