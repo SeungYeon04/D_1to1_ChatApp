@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ChatApp_1to1"
+        android:theme="@style/Theme.ChatApp_1to1.NoActionBar"
         tools:targetApi="31">
 
         <!-- 앱 시작은 임시로 LoginActivity -->
@@ -40,6 +40,18 @@
         <activity
             android:name=".PlantCareActivity"
             android:exported="true" />
+
+        <!-- 코드 페이지 -->
+        <activity
+            android:name=".CodeInputActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
