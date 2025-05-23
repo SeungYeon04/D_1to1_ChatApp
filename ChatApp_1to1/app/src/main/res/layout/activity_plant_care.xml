@@ -30,7 +30,7 @@
     <!-- 말풍선 이미지 (오른쪽) -->
     <ImageView
         android:id="@+id/ivSpeechBubble"
-        android:layout_width="48dp"
+        android:layout_width="30dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="말풍선"
@@ -189,11 +189,12 @@
 
     <!-- ✅ 텍스트뷰 영역은 아래에 몰아서 -->
     <TextView
+        android:fontFamily="@font/bmjua"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/water"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnWater"
         app:layout_constraintTop_toTopOf="@+id/btnWater"
@@ -202,11 +203,13 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <TextView
+        android:fontFamily="@font/bmjua"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sunlight"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnSunlight"
         app:layout_constraintTop_toTopOf="@+id/btnSunlight"
@@ -215,16 +218,19 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <TextView
+        android:fontFamily="@font/bmjua"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/nutrient"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnNutrient"
         app:layout_constraintTop_toTopOf="@+id/btnNutrient"
         app:layout_constraintStart_toStartOf="@+id/btnNutrient"
         app:layout_constraintEnd_toEndOf="@+id/btnNutrient"
+        android:fontFamily="@font/bmjua"
+
         app:layout_constraintVertical_bias="0.7" />
 
     <TextView
@@ -232,12 +238,14 @@
         android:layout_height="wrap_content"
         android:text="@string/more"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnMore"
         app:layout_constraintTop_toTopOf="@+id/btnMore"
         app:layout_constraintStart_toStartOf="@+id/btnMore"
         app:layout_constraintEnd_toEndOf="@+id/btnMore"
+        android:fontFamily="@font/bmjua"
+
         app:layout_constraintVertical_bias="0.7" />
 
 
