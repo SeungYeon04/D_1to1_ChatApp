@@ -15,7 +15,7 @@
 
         <!-- 앱 시작은 임시로 LoginActivity -->
         <activity
-            android:name=".PlantCareActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.ChatApp_1to1.NoActionBar">
             <intent-filter>
@@ -39,7 +39,8 @@
         <!-- 식물 키우기 기능 -->
         <activity
             android:name=".PlantCareActivity"
-            android:exported="true" />
-    </application>
+            android:exported="true"
+            android:theme="@style/Theme.ChatApp_1to1.NoActionBar" />
 
+    </application>
 </manifest>

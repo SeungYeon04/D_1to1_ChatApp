@@ -43,6 +43,7 @@
 
     <!-- 창문 프레임 (갈색 프레임과 하늘색 창문) -->
     <!-- 메인 콘텐츠 영역 - 연한 노란색 배경 -->
+
     <View
         android:id="@+id/mainBackground"
         android:layout_width="match_parent"
@@ -50,14 +51,15 @@
         android:background="@drawable/bg_game"
         app:layout_constraintBottom_toTopOf="@+id/footerBackground"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerBackground"
         app:layout_constraintVertical_bias="1.0" />
 
     <FrameLayout
         android:id="@+id/windowFrame"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="240dp"
+        android:layout_height="236dp"
         android:layout_marginTop="32dp"
         android:background="#D2B48C"
         android:padding="10dp"
@@ -67,8 +69,8 @@
 
         <!-- 창문 상단 왼쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="top|start"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -76,8 +78,8 @@
 
         <!-- 창문 상단 오른쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="top|end"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -85,8 +87,8 @@
 
         <!-- 창문 하단 왼쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="bottom|start"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -94,8 +96,8 @@
 
         <!-- 창문 하단 오른쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="bottom|end"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -131,7 +133,7 @@
         android:id="@+id/btnWater"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_water"
         android:scaleType="centerInside"
@@ -146,7 +148,7 @@
         android:id="@+id/btnSunlight"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_sun"
         android:scaleType="centerInside"
@@ -161,7 +163,7 @@
         android:id="@+id/btnNutrient"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_nutrient"
         android:scaleType="centerInside"
@@ -176,7 +178,7 @@
         android:id="@+id/btnMore"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_more"
         android:scaleType="centerInside"
@@ -215,7 +217,8 @@
         app:layout_constraintTop_toTopOf="@+id/btnSunlight"
         app:layout_constraintStart_toStartOf="@+id/btnSunlight"
         app:layout_constraintEnd_toEndOf="@+id/btnSunlight"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.7"
+        />
 
     <TextView
         android:fontFamily="@font/bmjua"
@@ -229,9 +232,8 @@
         app:layout_constraintTop_toTopOf="@+id/btnNutrient"
         app:layout_constraintStart_toStartOf="@+id/btnNutrient"
         app:layout_constraintEnd_toEndOf="@+id/btnNutrient"
-        android:fontFamily="@font/bmjua"
-
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.7"
+        />
 
     <TextView
         android:layout_width="0dp"
