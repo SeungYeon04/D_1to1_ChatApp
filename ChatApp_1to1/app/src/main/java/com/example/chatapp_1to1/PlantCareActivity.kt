@@ -1,104 +1,94 @@
 package com.example.chatapp_1to1
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.Gravity
+import android.view.WindowManager
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Transaction
 
 class PlantCareActivity : AppCompatActivity() {
-
-    enum class ItemType { WATER, LIGHT, HEALTH }
-
-    data class ItemEffect(
-        val field: String,
-        val amount: Int = -1,
-        val expGain: Int = 1
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plant_care)
 
-        val menuButton = findViewById<ImageButton>(R.id.btnMenu)
-        val waterButton = findViewById<ImageButton>(R.id.btnWater)
-        val sunlightButton = findViewById<ImageButton>(R.id.btnSunlight)
-        val nutrientButton = findViewById<ImageButton>(R.id.btnNutrient)
-        val moreButton = findViewById<ImageButton>(R.id.btnMore)
-        val speechBubble = findViewById<ImageView>(R.id.ivSpeechBubble)
+        val roomId = "ABCD1234"
 
-        val roomId = "ABCD1234" // TODO: 실제 방 ID로 대체하거나 Intent 등으로 받아오기
-
-        waterButton.setOnClickListener {
-            applyItem(ItemType.WATER, roomId)
-            Toast.makeText(this, getString(R.string.water_message), Toast.LENGTH_SHORT).show()
+        // 💧 물 버튼
+        findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
+            showItemModal(roomId, R.drawable.ic_water, "item.wateritem", isCody = false)
         }
 
-        sunlightButton.setOnClickListener {
-            applyItem(ItemType.LIGHT, roomId)
-            Toast.makeText(this, getString(R.string.sunlight_message), Toast.LENGTH_SHORT).show()
+        // ☀️ 햇빛 버튼
+        findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
+            showItemModal(roomId, R.drawable.ic_sun, "item.lightitem", isCody = false)
         }
 
-        nutrientButton.setOnClickListener {
-            applyItem(ItemType.HEALTH, roomId)
-            Toast.makeText(this, getString(R.string.nutrient_message), Toast.LENGTH_SHORT).show()
+        // 🌿 영양제 버튼
+        findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
+            showItemModal(roomId, R.drawable.ic_nutrient, "item.healthitem", isCody = false)
         }
 
-        moreButton.setOnClickListener {
-            Toast.makeText(this, getString(R.string.more_message), Toast.LENGTH_SHORT).show()
-        }
-
-        menuButton.setOnClickListener {
-            Toast.makeText(this, getString(R.string.menu), Toast.LENGTH_SHORT).show()
+        // 👕 코디 버튼 (예: 모자)
+        findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
+            showItemModal(roomId, R.drawable.ic_more, "item.codyitem", isCody = true)
         }
     }
 
-    private fun applyItem(type: ItemType, roomId: String) {
+    private fun showItemModal(roomId: String, iconRes: Int, firebasePath: String, isCody: Boolean) {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.md_item_modal)
+        dialog.setCancelable(true)
+
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(Gravity.BOTTOM)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val itemImage = dialog.findViewById<ImageButton>(R.id.itemimg)
+        val itemText = dialog.findViewById<TextView>(R.id.textView)
+        val closeBtn = dialog.findViewById<Button>(R.id.backbtn)
+
+        itemImage.setImageResource(iconRes)
+        itemText.text = "불러오는 중..."
+        closeBtn.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
+
+        // 파이어베이스 데이터 불러오기
         val db = FirebaseFirestore.getInstance()
         val roomRef = db.collection("rooms").document(roomId)
 
-        val effects = mapOf(
-            ItemType.WATER to ItemEffect("wateritem", -1, 1),
-            ItemType.LIGHT to ItemEffect("lightitem", -1, 1),
-            ItemType.HEALTH to ItemEffect("healthitem", -1, 2)
-        )
+        roomRef.get()
+            .addOnSuccessListener { snapshot ->
+                if (isCody) {
+                    val codyMap = snapshot.get(firebasePath) as? Map<*, *>
+                    if (codyMap != null) {
+                        val myitem = codyMap["myitem"] as? Boolean ?: false
+                        val price = (codyMap["price"] as? Long)?.toInt() ?: 0
+                        val wearing = codyMap["wearing"] as? Boolean ?: false
 
-        val effect = effects[type] ?: return
-
-        db.runTransaction { tx: Transaction ->
-            val snapshot = tx.get(roomRef)
-            val currentItem = (snapshot.getLong("item.${effect.field}") ?: 0).toInt()
-            val currentExp = (snapshot.getLong("plant.experience") ?: 0).toInt()
-            val nowLevel = (snapshot.getLong("plant.nowlevel") ?: 1).toInt()
-            val nextLevel = (snapshot.getLong("plant.nextlevel") ?: 10).toInt()
-
-            if (currentItem <= 0) {
-                throw Exception("아이템 없음")
+                        itemText.text = when {
+                            myitem && wearing -> "착용 중"
+                            myitem -> "보유 중"
+                            else -> "가격: $price"
+                        }
+                    } else {
+                        itemText.text = "코디 아이템 없음"
+                    }
+                } else {
+                    val count = (snapshot.getLong(firebasePath) ?: 0).toInt()
+                    itemText.text = "x $count"
+                }
             }
-
-            val newExp = currentExp + effect.expGain
-            var newLevel = nowLevel
-            var newNext = nextLevel
-
-            if (newExp >= nextLevel) {
-                newLevel += 1
-                newNext += 10 // 예: 다음 레벨업까지 10씩 증가
+            .addOnFailureListener {
+                itemText.text = "파이어베이스 오류 발생"
             }
-
-            tx.update(roomRef, mapOf(
-                "item.${effect.field}" to currentItem + effect.amount,
-                "plant.experience" to newExp,
-                "plant.nowlevel" to newLevel,
-                "plant.nextlevel" to newNext
-            ))
-        }.addOnSuccessListener {
-            Log.d("Firestore", "${type.name} 사용 성공 및 경험치 적용 완료")
-        }.addOnFailureListener { e ->
-            Log.e("Firestore", "아이템 적용 실패", e)
-        }
     }
 }
