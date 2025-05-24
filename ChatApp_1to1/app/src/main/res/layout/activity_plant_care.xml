@@ -131,8 +131,7 @@
 
     <ImageButton
         android:id="@+id/btnWater"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
         android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_water"
@@ -146,8 +145,7 @@
 
     <ImageButton
         android:id="@+id/btnSunlight"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
         android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_sun"
@@ -161,8 +159,6 @@
 
     <ImageButton
         android:id="@+id/btnNutrient"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_nutrient"
@@ -176,8 +172,6 @@
 
     <ImageButton
         android:id="@+id/btnMore"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_more"
@@ -249,6 +243,19 @@
         android:fontFamily="@font/bmjua"
 
         app:layout_constraintVertical_bias="0.7" />
+
+    <!-- 애니메이션 -->
+    <ImageView
+        android:id="@+id/ivEffect"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/water_item"
+        android:visibility="gone"
+        android:rotation="-30"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintStart_toStartOf="@+id/ivPlant" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout> 
