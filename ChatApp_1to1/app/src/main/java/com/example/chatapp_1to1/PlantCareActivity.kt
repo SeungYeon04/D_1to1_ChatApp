@@ -16,26 +16,27 @@ class PlantCareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plant_care)
 
+        // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
         val roomId = "ABCD1234"
 
-        // 💧 물 버튼
+        // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
         findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
-            showItemModal(roomId, R.drawable.ic_water, "item.wateritem", isCody = false)
+            showItemModal(roomId, R.drawable.water_item, "item.wateritem", isCody = false)
         }
 
         // ☀️ 햇빛 버튼
         findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
-            showItemModal(roomId, R.drawable.ic_sun, "item.lightitem", isCody = false)
+            showItemModal(roomId, R.drawable.sun_item, "item.lightitem", isCody = false)
         }
 
         // 🌿 영양제 버튼
         findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
-            showItemModal(roomId, R.drawable.ic_nutrient, "item.healthitem", isCody = false)
+            showItemModal(roomId, R.drawable.nutrient_item, "item.healthitem", isCody = false)
         }
 
         // 👕 코디 버튼 (예: 모자)
         findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
-            showItemModal(roomId, R.drawable.ic_more, "item.codyitem", isCody = true)
+            showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
         }
     }
 
