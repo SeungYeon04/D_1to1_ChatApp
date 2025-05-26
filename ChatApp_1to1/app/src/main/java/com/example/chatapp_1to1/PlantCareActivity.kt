@@ -11,7 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import com.google.firebase.firestore.Source
 
+
+//와이파이 관련
+fun Context.isInternetAvailable(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork ?: return false
+    val actNw = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return actNw.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
 
 class PlantCareActivity : AppCompatActivity() {
 
@@ -115,32 +127,45 @@ class PlantCareActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val roomRef = db.collection("rooms").document(roomId)
 
-        roomRef.get()
-            .addOnSuccessListener { snapshot ->
-                if (isCody) {
-                    val codyMap = snapshot.get(firebasePath) as? Map<*, *>
-                    if (codyMap != null) {
-                        val myitem = codyMap["myitem"] as? Boolean ?: false
-                        val price = (codyMap["price"] as? Long)?.toInt() ?: 0
-                        val wearing = codyMap["wearing"] as? Boolean ?: false
+        // ⛔ 와이파이 안 되면 수량 표시도 하지 않고, 메시지만 출력
+        if (!this@PlantCareActivity.isInternetAvailable()) {
+            itemText.text = if (!isCody) "x -" else "알 수 없음"
+            Toast.makeText(this, "⚠️ 네트워크 오류입니다", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-                        itemText.text = when {
-                            myitem && wearing -> "착용 중"
-                            myitem -> "보유 중"
-                            else -> "가격: $price"
+        try {
+            roomRef.get(Source.SERVER) // 오프라인 캐시 무시하고 서버에서만 가져옴
+                .addOnSuccessListener { snapshot ->
+                    if (isCody) {
+                        val codyMap = snapshot.get(firebasePath) as? Map<*, *>
+                        if (codyMap != null) {
+                            val myitem = codyMap["myitem"] as? Boolean ?: false
+                            val price = (codyMap["price"] as? Long)?.toInt() ?: 0
+                            val wearing = codyMap["wearing"] as? Boolean ?: false
+
+                            itemText.text = when {
+                                myitem && wearing -> "착용 중"
+                                myitem -> "보유 중"
+                                else -> "가격: $price"
+                            }
+                        } else {
+                            itemText.text = "코디 아이템 없음"
                         }
                     } else {
-                        itemText.text = "코디 아이템 없음"
+                        val count = (snapshot.getLong(firebasePath) ?: return@addOnSuccessListener).toInt()
+                        itemText.text = "x $count"
                     }
-                } else {
-                    val count = (snapshot.getLong(firebasePath) ?: 0).toInt()
-                    itemText.text = "x $count"
+                }
+                .addOnFailureListener {
+                    itemText.text = if (!isCody) "x -" else "알 수 없음"
+                    Toast.makeText(this, "⚠️ 네트워크 오류입니다", Toast.LENGTH_SHORT).show()
                 }
 
+        } catch (e: Exception) {
+            itemText.text = if (!isCody) "x -" else "알 수 없음"
+            Toast.makeText(this, "⚠️ 네트워크 오류 (예외)", Toast.LENGTH_SHORT).show()
+        }
 
-            }
-            .addOnFailureListener {
-                itemText.text = "파이어베이스 오류 발생"
-            }
     }
 }
