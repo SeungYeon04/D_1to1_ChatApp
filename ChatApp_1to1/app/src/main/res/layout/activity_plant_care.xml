@@ -104,6 +104,18 @@
             android:elevation="1dp" />
     </FrameLayout>
 
+    <!-- 애니 -->
+    <ImageView
+        android:id="@+id/ivEffect"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="130dp"
+        android:visibility="gone"
+        android:src="@drawable/water_item"
+    app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- 식물 화분 이미지 -->
 
     <!-- 하단 푸터 - 배경 -->
@@ -249,6 +261,7 @@
         android:fontFamily="@font/bmjua"
 
         app:layout_constraintVertical_bias="0.7" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

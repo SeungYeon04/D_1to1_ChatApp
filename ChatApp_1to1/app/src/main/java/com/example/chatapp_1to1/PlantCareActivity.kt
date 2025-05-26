@@ -9,6 +9,9 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+
 
 class PlantCareActivity : AppCompatActivity() {
 
@@ -62,6 +65,26 @@ class PlantCareActivity : AppCompatActivity() {
 
         dialog.show()
 
+        itemImage.setOnClickListener {
+            dialog.dismiss()
+
+            val effectView = findViewById<ImageView>(R.id.ivEffect)
+            effectView.setImageResource(iconRes)
+            effectView.visibility = ImageView.VISIBLE
+
+            val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.effect_scale)
+            effectView.startAnimation(animation)
+
+            animation.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+                override fun onAnimationStart(animation: android.view.animation.Animation) {}
+                override fun onAnimationEnd(animation: android.view.animation.Animation) {
+                    effectView.visibility = ImageView.GONE
+                }
+                override fun onAnimationRepeat(animation: android.view.animation.Animation) {}
+            })
+        }
+
+
         // 파이어베이스 데이터 불러오기
         val db = FirebaseFirestore.getInstance()
         val roomRef = db.collection("rooms").document(roomId)
@@ -87,6 +110,8 @@ class PlantCareActivity : AppCompatActivity() {
                     val count = (snapshot.getLong(firebasePath) ?: 0).toInt()
                     itemText.text = "x $count"
                 }
+
+
             }
             .addOnFailureListener {
                 itemText.text = "파이어베이스 오류 발생"
