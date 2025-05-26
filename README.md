@@ -18,7 +18,7 @@ url: 완성 후 오픈 예정
   
 ## ⚙️ 개발환경  
  
-• 언어: Kotlin & java  
+• 언어: Kotlin & Java  
 • IDE: Android Studio  
 • VCS: Github desktop  
   
