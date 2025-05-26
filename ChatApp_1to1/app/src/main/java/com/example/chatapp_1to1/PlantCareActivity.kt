@@ -68,21 +68,47 @@ class PlantCareActivity : AppCompatActivity() {
         itemImage.setOnClickListener {
             dialog.dismiss()
 
-            val effectView = findViewById<ImageView>(R.id.ivEffect)
-            effectView.setImageResource(iconRes)
-            effectView.visibility = ImageView.VISIBLE
+            if (!isCody) {
+                val db = FirebaseFirestore.getInstance()
+                val roomRef = db.collection("rooms").document(roomId)
 
-            val animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.effect_scale)
-            effectView.startAnimation(animation)
+                db.runTransaction { transaction ->
+                    val snapshot = transaction.get(roomRef)
 
-            animation.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
-                override fun onAnimationStart(animation: android.view.animation.Animation) {}
-                override fun onAnimationEnd(animation: android.view.animation.Animation) {
-                    effectView.visibility = ImageView.GONE
+                    val itemCount = (snapshot.getLong(firebasePath) ?: 0).toInt()
+                    val exp = (snapshot.getLong("plant.experience") ?: 0).toInt()
+
+                    if (itemCount <= 0) {
+                        throw Exception("아이템이 없습니다")
+                    }
+
+                    transaction.update(roomRef, firebasePath, itemCount - 1)
+                    transaction.update(roomRef, "plant.experience", exp + 1)
                 }
-                override fun onAnimationRepeat(animation: android.view.animation.Animation) {}
-            })
+                    .addOnSuccessListener {
+                        // 🔥 트랜잭션 성공 후에만 애니메이션 실행
+                        val effectView = findViewById<ImageView>(R.id.ivEffect)
+                        effectView.setImageResource(iconRes)
+                        effectView.visibility = ImageView.VISIBLE
+
+                        val animation = AnimationUtils.loadAnimation(this, R.anim.effect_scale)
+                        effectView.startAnimation(animation)
+
+                        animation.setAnimationListener(object : Animation.AnimationListener {
+                            override fun onAnimationStart(animation: Animation) {}
+                            override fun onAnimationEnd(animation: Animation) {
+                                effectView.visibility = ImageView.GONE
+                            }
+                            override fun onAnimationRepeat(animation: Animation) {}
+                        })
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "아이템이 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
+
+
 
 
         // 파이어베이스 데이터 불러오기
