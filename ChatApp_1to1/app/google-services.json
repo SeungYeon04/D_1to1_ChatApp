@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "136001185935",
+    "firebase_url": "https://cap-1to1chatapp-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "cap-1to1chatapp",
     "storage_bucket": "cap-1to1chatapp.firebasestorage.app"
   },
