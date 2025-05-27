@@ -1,5 +1,6 @@
 package com.example.chatapp_1to1
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -153,6 +154,10 @@ class CodeInputActivity : AppCompatActivity() {
                                     .set(roomData)
                                     .addOnSuccessListener {
                                         Toast.makeText(this@CodeInputActivity, "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show()
+                                        // ChatActivity 시작
+                                        val intent = Intent(this@CodeInputActivity, ChatActivity::class.java)
+                                        intent.putExtra("roomId", roomId)
+                                        startActivity(intent)
                                         finish()
                                     }
                                     .addOnFailureListener { e ->
