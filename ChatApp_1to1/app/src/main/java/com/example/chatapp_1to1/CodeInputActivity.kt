@@ -1,95 +1,186 @@
 package com.example.chatapp_1to1
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CodeInputActivity : AppCompatActivity() {
-    private lateinit var database: DatabaseReference
+
+    private lateinit var etCode: EditText
+    private lateinit var btnJoin: Button
+    private lateinit var usersRef: DatabaseReference
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_codeinput)
 
-        // Firebase 초기화
-        database = FirebaseDatabase.getInstance().reference
+        etCode = findViewById(R.id.etCodeInput)
+        btnJoin = findViewById(R.id.btnJoin)
+        mAuth = FirebaseAuth.getInstance()
+        usersRef = FirebaseDatabase.getInstance().getReference("users")
+        firestore = FirebaseFirestore.getInstance()
 
-        val etCode = findViewById<EditText>(R.id.etCodeInput)
-        val btnTest = findViewById<Button>(R.id.btnJoin)
-
-        btnTest.setOnClickListener {
-            val code = etCode.text.toString().trim()
-            
-            if (code.isEmpty()) {
-                Toast.makeText(this, "코드를 입력해주세요", Toast.LENGTH_SHORT).show()
+        btnJoin.setOnClickListener {
+            val inputCode = etCode.text.toString().trim()
+            if (inputCode.length != 12) {
+                Toast.makeText(this, "12자리 코드를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 테스트용 UID 사용
-            val uid = "test_user_123"
-            val chatRoomRef = database.child("chatRooms").child(code)
-
-            // 채팅방 존재 여부 확인
-            chatRoomRef.get().addOnSuccessListener { snapshot ->
-                if (!snapshot.exists()) {
-                    // 채팅방이 없으면 새로 생성
-                    val newChatRoom = mapOf(
-                        "createdAt" to System.currentTimeMillis(),
-                        "users" to mapOf(uid to true)
-                    )
-                    
-                    chatRoomRef.setValue(newChatRoom)
-                        .addOnSuccessListener {
-                            // 채팅방 생성 후 첫 메시지 저장
-                            val message = mapOf(
-                                "sender" to uid,
-                                "text" to "채팅방이 생성되었습니다",
-                                "timestamp" to System.currentTimeMillis()
-                            )
-
-                            chatRoomRef.child("messages").push().setValue(message)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "새로운 채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show()
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(this, "메시지 저장 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "채팅방 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    // 기존 채팅방에 참여
-                    chatRoomRef.child("users").child(uid).setValue(true)
-                        .addOnSuccessListener {
-                            val message = mapOf(
-                                "sender" to uid,
-                                "text" to "새로운 사용자가 참여했습니다",
-                                "timestamp" to System.currentTimeMillis()
-                            )
-
-                            chatRoomRef.child("messages").push().setValue(message)
-                                .addOnSuccessListener {
-                                    Toast.makeText(this, "채팅방 참여 완료!", Toast.LENGTH_SHORT).show()
-                                    finish()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(this, "메시지 저장 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "채팅방 참여 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }.addOnFailureListener { e ->
-                Toast.makeText(this, "채팅방 확인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+            // 현재 로그인한 사용자 정보 확인
+            val currentUser = mAuth.currentUser
+            if (currentUser == null) {
+                Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            val currentUid = currentUser.uid
+
+            // Realtime Database의 "users"에서 입력한 code와 일치하는 사용자를 검색
+            val query = usersRef.orderByChild("code").equalTo(inputCode)
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var matchedSnapshot: DataSnapshot? = null
+                        for (child in snapshot.children) {
+                            matchedSnapshot = child
+                            break // 첫 번째 매칭 사용자 선택
+                        }
+                        if (matchedSnapshot == null) {
+                            Toast.makeText(this@CodeInputActivity, "일치하는 사용자를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        val matchedUser = matchedSnapshot.getValue(UserModel::class.java)
+                        val matchedUid = matchedSnapshot.key
+
+                        // 자신의 코드는 입력할 수 없도록 검사
+                        if (matchedUid == currentUid) {
+                            Toast.makeText(this@CodeInputActivity, "자신의 코드는 입력할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        // 현재 사용자의 정보를 "users" 노드에서 조회
+                        usersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (!snapshot.exists()) {
+                                    Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+                                    return
+                                }
+                                val currentUserModel = snapshot.getValue(UserModel::class.java)
+                                if (currentUserModel == null) {
+                                    Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                                    return
+                                }
+
+                                // 두 uid를 사전순으로 결합하여 채팅방 고유 ID 생성
+                                val roomId = if (currentUid < matchedUid!!) {
+                                    "${currentUid}_$matchedUid"
+                                } else {
+                                    "${matchedUid}_$currentUid"
+                                }
+
+                                // Firestore에 저장할 채팅방 데이터 구성
+                                val roomData = HashMap<String, Any>()
+                                roomData["createdAt"] = FieldValue.serverTimestamp()
+
+                                // "users" 필드 구성 (회원가입 시 저장된 username은 nickname, code는 uid로 사용)
+                                val usersMap = HashMap<String, Any>()
+                                val currentUserMap = hashMapOf(
+                                    "nickname" to currentUserModel.username,
+                                    "uid" to currentUserModel.code
+                                )
+                                usersMap[currentUid] = currentUserMap
+
+                                val matchedUserMap = hashMapOf<String, Any>()
+                                if (matchedUser != null) {
+                                    matchedUserMap["nickname"] = matchedUser.username
+                                    matchedUserMap["uid"] = matchedUser.code
+                                    usersMap[matchedUid] = matchedUserMap
+                                } else {
+                                    Toast.makeText(this@CodeInputActivity, "매칭된 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                                    return
+                                }
+                                roomData["users"] = usersMap
+
+                                // "chat" 필드 구성 (사진 예시와 같이 하드코딩)
+                                val chatMap = hashMapOf<String, Any>(
+                                    "msg1" to hashMapOf(
+                                        "sender" to "관리자",
+                                        "text" to "채팅방이 생성되었습니다",
+                                        "timestamp" to 1677830400000L
+                                    ),
+                                    "msg2" to hashMapOf(
+                                        "sender" to "관리자",
+                                        "text" to "새로운 사용자가 참여했습니다",
+                                        "timestamp" to 1677831000000L
+                                    )
+                                )
+                                roomData["chat"] = chatMap
+
+                                // "item" 필드 구성 (사진의 구조에 따른 값들)
+                                val itemMap = hashMapOf<String, Any>(
+                                    "codyitem" to hashMapOf(
+                                        "myitem" to false,
+                                        "price" to 100
+                                    ),
+                                    "healthitem" to 0,
+                                    "lightitem" to 0,
+                                    "wateritem" to 0
+                                )
+                                roomData["item"] = itemMap
+
+                                // "plant" 필드 구성 (사진의 구조에 따른 값들)
+                                val plantMap = hashMapOf(
+                                    "experience" to 15,
+                                    "money" to 10
+                                )
+                                roomData["plant"] = plantMap
+
+                                // Cloud Firestore의 "rooms" 컬렉션에 채팅방 문서 생성
+                                firestore.collection("rooms").document(roomId)
+                                    .set(roomData)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this@CodeInputActivity, "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this@CodeInputActivity, "채팅방 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(
+                                    this@CodeInputActivity,
+                                    "현재 사용자 정보를 불러오는 중 오류: ${error.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    } else {
+                        Toast.makeText(this@CodeInputActivity, "입력한 코드와 일치하는 사용자가 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@CodeInputActivity,
+                        "사용자 검색 중 오류: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
         }
     }
 }

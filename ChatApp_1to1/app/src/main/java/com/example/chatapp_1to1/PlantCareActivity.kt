@@ -1,19 +1,24 @@
 package com.example.chatapp_1to1
 
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.FirebaseFirestore
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
 
@@ -33,6 +38,7 @@ class PlantCareActivity : AppCompatActivity() {
 
         // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
         val roomId = "ABCD1234"
+        val speechBundle = findViewById<ImageView>(R.id.ivSpeechBubble)
 
         // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
         findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
@@ -53,6 +59,12 @@ class PlantCareActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
             showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
         }
+
+        speechBundle.setOnClickListener {
+            val intent = Intent(this, CodeInputActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun showItemModal(roomId: String, iconRes: Int, firebasePath: String, isCody: Boolean) {
