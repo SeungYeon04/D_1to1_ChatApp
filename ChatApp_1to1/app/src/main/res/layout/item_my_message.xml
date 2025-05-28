@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/messageText"
+        android:layout_toStartOf="@id/messageText"
+        android:layout_marginEnd="8dp"
+        android:textSize="12sp"
+        android:textColor="#808080" />
+
+    <TextView
+        android:id="@+id/messageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/bg_my_message"
+        android:maxWidth="240dp"
+        android:padding="12dp"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout> 
