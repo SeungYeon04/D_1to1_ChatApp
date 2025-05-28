@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="#ffffff"
+    android:padding="12dp">
+
+    <!-- X 버튼: 우측 상단 -->
+    <Button
+        android:id="@+id/backbtn"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="X"
+        android:textAllCaps="false"
+        app:rippleColor="#000000" />
+
+    <!-- 아이템 이미지: 모달 좌측 상단에서 살짝 띄운 위치 -->
+    <ImageButton
+        android:id="@+id/itemimg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!-- 수량 텍스트: 이미지 바로 아래에 위치 -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemimg"
+        android:layout_alignStart="@id/itemimg"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="-23dp"
+        android:text="x 3"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+</RelativeLayout>

@@ -11,7 +11,7 @@
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#4CAF50"
+        android:background="#7F6C5E"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 메뉴 버튼 (왼쪽) -->
@@ -30,7 +30,7 @@
     <!-- 말풍선 이미지 (오른쪽) -->
     <ImageView
         android:id="@+id/ivSpeechBubble"
-        android:layout_width="48dp"
+        android:layout_width="30dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="말풍선"
@@ -42,20 +42,24 @@
     <!-- 메인 콘텐츠 영역 - 연한 노란색 배경 -->
 
     <!-- 창문 프레임 (갈색 프레임과 하늘색 창문) -->
+    <!-- 메인 콘텐츠 영역 - 연한 노란색 배경 -->
+
     <View
         android:id="@+id/mainBackground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#FFFDE7"
+        android:background="@drawable/bg_game"
         app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerBackground"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="33dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <FrameLayout
         android:id="@+id/windowFrame"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="240dp"
+        android:layout_height="236dp"
         android:layout_marginTop="32dp"
         android:background="#D2B48C"
         android:padding="10dp"
@@ -65,8 +69,8 @@
 
         <!-- 창문 상단 왼쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="top|start"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -74,8 +78,8 @@
 
         <!-- 창문 상단 오른쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="top|end"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -83,8 +87,8 @@
 
         <!-- 창문 하단 왼쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="bottom|start"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
@@ -92,17 +96,29 @@
 
         <!-- 창문 하단 오른쪽 -->
         <View
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="bottom|end"
             android:layout_margin="5dp"
             android:background="#ADD8E6"
             android:elevation="1dp" />
     </FrameLayout>
 
+    <!-- 애니 -->
+    <ImageView
+        android:id="@+id/ivEffect"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="130dp"
+        android:visibility="gone"
+        android:src="@drawable/water_item"
+    app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- 식물 화분 이미지 -->
 
-    <!-- 하단 푸터 - 녹색 배경 -->
+    <!-- 하단 푸터 - 배경 -->
 
     <ImageView
         android:id="@+id/ivPlant"
@@ -116,116 +132,136 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- ✅ 버튼 영역만 위에 몰아서 -->
     <View
         android:id="@+id/footerBackground"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:background="#4CAF50"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_height="100dp"
+        android:background="#F3E6D3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 물 버튼 -->
     <ImageButton
         android:id="@+id/btnWater"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/water"
+        android:layout_margin="8dp"
+        android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_water"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSunlight"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
+        app:layout_constraintEnd_toStartOf="@+id/btnSunlight" />
 
-    <!-- 햇빛 버튼 -->
     <ImageButton
         android:id="@+id/btnSunlight"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/sunlight"
+        android:layout_margin="8dp"
+        android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_sun"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnNutrient"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
         app:layout_constraintStart_toEndOf="@+id/btnWater"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
+        app:layout_constraintEnd_toStartOf="@+id/btnNutrient" />
 
-    <!-- 영양제 버튼 -->
     <ImageButton
         android:id="@+id/btnNutrient"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/nutrient"
+        android:layout_margin="8dp"
+        android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_nutrient"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnMore"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
         app:layout_constraintStart_toEndOf="@+id/btnSunlight"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
+        app:layout_constraintEnd_toStartOf="@+id/btnMore" />
 
-    <!-- 더보기 버튼 -->
     <ImageButton
         android:id="@+id/btnMore"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/more"
+        android:layout_margin="8dp"
+        android:background="@drawable/bt_brown01_rounded"
         android:src="@drawable/ic_more"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
         app:layout_constraintStart_toEndOf="@+id/btnNutrient"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 하단 버튼 텍스트 -->
+    <!-- ✅ 텍스트뷰 영역은 아래에 몰아서 -->
     <TextView
+        android:fontFamily="@font/bmjua"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/water"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnWater"
-        app:layout_constraintEnd_toEndOf="@+id/btnWater"
-        app:layout_constraintStart_toStartOf="@+id/btnWater"
         app:layout_constraintTop_toTopOf="@+id/btnWater"
+        app:layout_constraintStart_toStartOf="@+id/btnWater"
+        app:layout_constraintEnd_toEndOf="@+id/btnWater"
         app:layout_constraintVertical_bias="0.7" />
 
     <TextView
+        android:fontFamily="@font/bmjua"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/sunlight"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnSunlight"
-        app:layout_constraintEnd_toEndOf="@+id/btnSunlight"
-        app:layout_constraintStart_toStartOf="@+id/btnSunlight"
         app:layout_constraintTop_toTopOf="@+id/btnSunlight"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintStart_toStartOf="@+id/btnSunlight"
+        app:layout_constraintEnd_toEndOf="@+id/btnSunlight"
+        app:layout_constraintVertical_bias="0.7"
+        />
 
     <TextView
+        android:fontFamily="@font/bmjua"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/nutrient"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnNutrient"
-        app:layout_constraintEnd_toEndOf="@+id/btnNutrient"
-        app:layout_constraintStart_toStartOf="@+id/btnNutrient"
         app:layout_constraintTop_toTopOf="@+id/btnNutrient"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintStart_toStartOf="@+id/btnNutrient"
+        app:layout_constraintEnd_toEndOf="@+id/btnNutrient"
+        app:layout_constraintVertical_bias="0.7"
+        />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/more"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/btnMore"
-        app:layout_constraintEnd_toEndOf="@+id/btnMore"
-        app:layout_constraintStart_toStartOf="@+id/btnMore"
         app:layout_constraintTop_toTopOf="@+id/btnMore"
+        app:layout_constraintStart_toStartOf="@+id/btnMore"
+        app:layout_constraintEnd_toEndOf="@+id/btnMore"
+        android:fontFamily="@font/bmjua"
+
         app:layout_constraintVertical_bias="0.7" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

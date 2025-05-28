@@ -88,7 +88,8 @@
             android:background="@drawable/bt_color02_rounded"
             android:gravity="center"
             android:hint="1234"
-            android:inputType="number" />
+            android:inputType="text"
+            android:maxLength="12" />
 
         <!-- 내 코드 텍스트 -->
         <TextView
