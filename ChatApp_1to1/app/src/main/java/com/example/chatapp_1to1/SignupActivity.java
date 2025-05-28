@@ -3,11 +3,11 @@ package com.example.chatapp_1to1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +49,8 @@ public class SignupActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             String uid = mAuth.getCurrentUser().getUid();
-                            usersRef.child(uid).setValue(new UserModel(email, password, "캡스톤베이스"));
+                            String code = generateRandomCode(12);
+                            usersRef.child(uid).setValue(new UserModel(email, password, "캡스톤베이스", code));
                             Toast.makeText(this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(this, LoginActivity.class));
                             finish();
@@ -63,5 +64,15 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
+    }
+
+    private String generateRandomCode(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int randIndex = (int) (Math.random() * chars.length());
+            sb.append(chars.charAt(randIndex));
+        }
+        return sb.toString();
     }
 }
