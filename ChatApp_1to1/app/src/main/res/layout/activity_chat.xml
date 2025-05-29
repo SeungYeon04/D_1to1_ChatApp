@@ -2,40 +2,129 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#F5F5DC">
 
+    <!-- 상단 헤더 -->
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#8B7355"
+        android:paddingTop="40dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp">
+
+        <!-- 채팅방 제목 (왼쪽) -->
+        <TextView
+            android:id="@+id/chatTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:text="나는장미놈년&lt;3"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- 상태 표시 (오른쪽에서 두번째) -->
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/closeButton"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/status_bg"
+            android:text="신남"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingHorizontal="12dp" />
+
+        <!-- X 버튼 (가장 오른쪽) -->
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            android:tint="#FFFFFF" />
+
+    </RelativeLayout>
+
+    <!-- 채팅 메시지 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomLayout"
-        android:padding="8dp" />
+        android:layout_below="@+id/headerLayout"
+        android:layout_above="@+id/bottomBackground"
+        android:padding="8dp"
+        android:clipToPadding="false" />
 
+    <!-- 하단 전체 배경 -->
+    <View
+        android:id="@+id/bottomBackground"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="#8B7355" />
+
+    <!-- 하단 입력 영역 -->
     <LinearLayout
         android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bottom_input_bg"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:gravity="center_vertical">
 
+        <!-- 이모티콘 버튼 -->
+        <ImageButton
+            android:id="@+id/emojiButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_emoji"
+            android:tint="#FFFFFF"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 메시지 입력창 -->
         <EditText
             android:id="@+id/messageInput"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@android:drawable/editbox_background"
+            android:background="@drawable/input_bg_bottom"
             android:hint="메시지를 입력하세요"
             android:padding="12dp"
-            android:maxLines="4" />
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_marginEnd="8dp" />
 
+        <!-- 전송 버튼 -->
         <Button
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="전송" />
+            android:layout_height="36dp"
+            android:minWidth="70dp"
+            android:background="@drawable/send_button_bg_bottom"
+            android:text="전송"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:paddingHorizontal="12dp" />
 
     </LinearLayout>
 

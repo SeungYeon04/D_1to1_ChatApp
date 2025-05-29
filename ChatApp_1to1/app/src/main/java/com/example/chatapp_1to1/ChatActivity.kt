@@ -3,7 +3,10 @@ package com.example.chatapp_1to1
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,10 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageInput: EditText
     private lateinit var sendButton: Button
+    private lateinit var emojiButton: ImageButton
+    private lateinit var closeButton: ImageButton
+    private lateinit var chatTitle: TextView
+    private lateinit var statusText: TextView
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var firestore: FirebaseFirestore
     private lateinit var roomId: String
@@ -39,6 +46,13 @@ class ChatActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         messageInput = findViewById(R.id.messageInput)
         sendButton = findViewById(R.id.sendButton)
+        emojiButton = findViewById(R.id.emojiButton)
+        closeButton = findViewById(R.id.closeButton)
+        chatTitle = findViewById(R.id.chatTitle)
+        statusText = findViewById(R.id.statusText)
+
+        // 헤더 정보 설정
+        setupHeader()
 
         // RecyclerView 설정
         chatAdapter = ChatAdapter(currentUserUid)
@@ -58,8 +72,39 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
+        // X 버튼 클릭 리스너
+        closeButton.setOnClickListener {
+            showExitConfirmDialog()
+        }
+
+        // 이모티콘 버튼 클릭 리스너
+        emojiButton.setOnClickListener {
+            Toast.makeText(this, "이모티콘 기능은 추후 구현 예정입니다.", Toast.LENGTH_SHORT).show()
+        }
+
         // 실시간 메시지 수신 리스너 설정
         setupMessageListener()
+    }
+
+    private fun setupHeader() {
+        // 채팅방 제목 설정 (상대방 이름 등으로 나중에 데이터 받아서 처리)
+        val partnerName = intent.getStringExtra("partnerName") ?: "나는장미놈년<3"
+        chatTitle.text = partnerName
+        
+        // 상태 텍스트 설정 (접속 상태 등으로 나중에 데이터 받아서 처리)
+        val status = intent.getStringExtra("status") ?: "신남"
+        statusText.text = status
+    }
+
+    private fun showExitConfirmDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("채팅방 나가기")
+            .setMessage("정말 나가시겠습니까?")
+            .setPositiveButton("나가기") { _, _ ->
+                finish()
+            }
+            .setNegativeButton("취소", null)
+            .show()
     }
 
     private fun setupMessageListener() {
