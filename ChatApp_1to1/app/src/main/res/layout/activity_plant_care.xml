@@ -116,21 +116,35 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- 식물 화분 이미지 -->
 
     <!-- 하단 푸터 - 배경 -->
 
+    <!-- 🪴 고정된 화분 (항상 보임) -->
+    <ImageView
+        android:id="@+id/ivPot"
+
+        android:layout_width="75dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/cody_pot01"
+        android:contentDescription="화분"
+        app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+    />
+
+    <!-- 🌿 경험치 기반 식물 (처음엔 GONE) -->
     <ImageView
         android:id="@+id/ivPlant"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="75dp"
+        android:visibility="gone"
         android:contentDescription="식물"
-        android:src="@drawable/plant_pot"
         app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        />
 
     <!-- ✅ 버튼 영역만 위에 몰아서 -->
     <View
