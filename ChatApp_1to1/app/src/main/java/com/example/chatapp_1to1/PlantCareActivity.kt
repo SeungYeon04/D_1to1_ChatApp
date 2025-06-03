@@ -1,5 +1,6 @@
 package com.example.chatapp_1to1
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
@@ -38,7 +40,6 @@ class PlantCareActivity : AppCompatActivity() {
 
         // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
         val roomId = "ABCD1234"
-        val speechBundle = findViewById<ImageView>(R.id.ivSpeechBubble)
 
         // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
         findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
@@ -60,9 +61,13 @@ class PlantCareActivity : AppCompatActivity() {
             showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
         }
 
-        speechBundle.setOnClickListener {
+        findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
             val intent = Intent(this, CodeInputActivity::class.java)
             startActivity(intent)
+        }
+
+        findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
+            showLogoutDialog(this)
         }
 
     }
@@ -180,4 +185,23 @@ class PlantCareActivity : AppCompatActivity() {
         }
 
     }
+
+    fun PlantCareActivity.showLogoutDialog(activity: PlantCareActivity) {
+        AlertDialog.Builder(activity)
+            .setTitle("로그아웃")
+            .setMessage("정말 로그아웃 하시겠습니까?")
+            .setPositiveButton("네") { dialog, _ ->
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(activity, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                activity.startActivity(intent)
+                activity.finish()
+            }
+            .setNegativeButton("아니요") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
 }
