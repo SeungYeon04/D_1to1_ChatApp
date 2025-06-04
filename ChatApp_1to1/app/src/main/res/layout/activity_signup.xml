@@ -25,6 +25,19 @@
     <!-- 간격 -->
     <View android:layout_height="40dp" android:layout_width="match_parent"/>
 
+    <!-- 이름 입력 -->
+    <EditText
+        android:background="@drawable/bt_color02_rounded"
+        android:id="@+id/SignupTextName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bmjua"
+        android:hint="이름"
+        android:paddingHorizontal="16dp"
+        />
+
+    <View android:layout_height="16dp" android:layout_width="match_parent"/>
+
     <!-- 아이디 입력 -->
     <EditText
         android:background="@drawable/bt_color02_rounded"
