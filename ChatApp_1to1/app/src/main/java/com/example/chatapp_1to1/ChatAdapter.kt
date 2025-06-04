@@ -5,9 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class ChatAdapter(private val currentUserUid: String) : RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
     
@@ -20,8 +17,8 @@ class ChatAdapter(private val currentUserUid: String) : RecyclerView.Adapter<Cha
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val layout = when (viewType) {
-            VIEW_TYPE_MY_MESSAGE -> R.layout.item_my_message
-            else -> R.layout.item_other_message
+            VIEW_TYPE_MY_MESSAGE -> R.layout.item_message_sent
+            else -> R.layout.item_message_received
         }
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return MessageViewHolder(view)
@@ -56,23 +53,9 @@ class ChatAdapter(private val currentUserUid: String) : RecyclerView.Adapter<Cha
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageText: TextView = itemView.findViewById(R.id.messageText)
-        private val timeText: TextView = itemView.findViewById(R.id.timeText)
-        private val senderName: TextView? = itemView.findViewById(R.id.senderName)
 
         fun bind(message: ChatMessage) {
             messageText.text = message.text
-            timeText.text = formatTimestamp(message.timestamp)
-            senderName?.text = message.sender
-        }
-
-        private fun formatTimestamp(timestamp: Long): String {
-            return try {
-                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-                val date = Date(timestamp)
-                sdf.format(date)
-            } catch (e: Exception) {
-                ""
-            }
         }
     }
 } 
