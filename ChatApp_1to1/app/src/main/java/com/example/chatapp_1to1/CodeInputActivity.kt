@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CodeInputActivity : AppCompatActivity() {
 
+    private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
     private lateinit var btnJoin: Button
     private lateinit var usersRef: DatabaseReference
@@ -32,6 +34,32 @@ class CodeInputActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         usersRef = FirebaseDatabase.getInstance().getReference("users")
         firestore = FirebaseFirestore.getInstance()
+        myCodeText = findViewById(R.id.my_code_text)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+
+            usersRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+
+            usersRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val code = snapshot.child("code").getValue(String::class.java)
+                    myCodeText.text = code ?: "코드 생성이 되지 않았습니다."
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@CodeInputActivity,
+                        "내 코드 확인 중 오류: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        } else {
+            // 사용자가 로그인되어 있지 않은 경우 예외 처리(예: 로그인 화면으로 이동)
+            myCodeText.text = "로그인이 필요합니다."
+        }
 
         btnJoin.setOnClickListener {
             val inputCode = etCode.text.toString().trim()
