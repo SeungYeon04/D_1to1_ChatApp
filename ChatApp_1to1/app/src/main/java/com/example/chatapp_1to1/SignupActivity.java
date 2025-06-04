@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText editTextId, editTextPassword;
+    private EditText editTextName, editTextId, editTextPassword;
     private Button btnSignup;
     private TextView loginText;
 
@@ -28,6 +28,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        editTextName = findViewById(R.id.SignupTextName);
         editTextId = findViewById(R.id.SignupTextId);
         editTextPassword = findViewById(R.id.SignupPassword);
         btnSignup = findViewById(R.id.btnSignup);
@@ -37,6 +38,7 @@ public class SignupActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference("users");
 
         btnSignup.setOnClickListener(v -> {
+            String name = editTextName.getText().toString().trim();
             String email = editTextId.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
 
@@ -50,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String uid = mAuth.getCurrentUser().getUid();
                             String code = generateRandomCode(12);
-                            usersRef.child(uid).setValue(new UserModel(email, password, "캡스톤베이스", code));
+                            usersRef.child(uid).setValue(new UserModel(email, password, name, code));
                             Toast.makeText(this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(this, LoginActivity.class));
                             finish();
