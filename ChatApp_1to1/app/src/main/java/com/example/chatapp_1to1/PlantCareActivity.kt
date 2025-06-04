@@ -1,6 +1,5 @@
 package com.example.chatapp_1to1
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -19,7 +18,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
@@ -41,6 +39,11 @@ class PlantCareActivity : AppCompatActivity() {
         // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
         val roomId = "ABCD1234"
 
+        // 👉 앱 시작 시 식물 렌더링
+        renderPlantImage(roomId)
+
+        val speechBundle = findViewById<ImageView>(R.id.ivSpeechBubble)
+
         // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
         findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
             showItemModal(roomId, R.drawable.water_item, "item.wateritem", isCody = false)
@@ -61,15 +64,48 @@ class PlantCareActivity : AppCompatActivity() {
             showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
         }
 
-        findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
+        speechBundle.setOnClickListener {
             val intent = Intent(this, CodeInputActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
-            showLogoutDialog(this)
-        }
+    }
 
+    private fun renderPlantImage(roomId: String) {
+        val plantImage = findViewById<ImageView>(R.id.ivPlant)
+        val db = FirebaseFirestore.getInstance()
+        val roomRef = db.collection("rooms").document(roomId)
+
+        roomRef.get(Source.SERVER)
+            .addOnSuccessListener { snapshot ->
+                try {
+                    val exp = (snapshot.getLong("plant.experience") ?: throw Exception("경험치 누락")).toInt()
+
+                    val imageRes = if (exp < 3) {
+                        R.drawable.ch01_plant_level1
+                    } else if (exp < 5) {
+                        R.drawable.ch01_plant_level2
+                    } else if (exp < 10) {
+                        R.drawable.ch01_plant_level3
+                    } else if (exp < 20) {
+                        R.drawable.ch01_plant_level4
+                    } else if (exp < 30) {
+                        R.drawable.ch01_plant_level5
+                    } else {
+                        R.drawable.ch01_plant_max
+                    }
+
+                    plantImage.setImageResource(imageRes)
+                    // 앱 시작 시 ivPlant는 GONE 상태 Firestore에서 경험치 성공적으로 불러오면 → setImageResource() + VISIBLE
+                    plantImage.visibility = ImageView.VISIBLE
+
+                } catch (e: Exception) {
+                    Toast.makeText(this, "🌱 식물 상태를 불러올 수 없습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "⚠️ 식물 정보 로딩 실패", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun showItemModal(roomId: String, iconRes: Int, firebasePath: String, isCody: Boolean) {
@@ -152,9 +188,10 @@ class PlantCareActivity : AppCompatActivity() {
         }
 
         try {
-            roomRef.get(Source.SERVER) // 오프라인 캐시 무시하고 서버에서만 가져옴
+            roomRef.get(Source.SERVER)
                 .addOnSuccessListener { snapshot ->
                     if (isCody) {
+                        // 기존 코디 아이템 UI 갱신
                         val codyMap = snapshot.get(firebasePath) as? Map<*, *>
                         if (codyMap != null) {
                             val myitem = codyMap["myitem"] as? Boolean ?: false
@@ -170,9 +207,11 @@ class PlantCareActivity : AppCompatActivity() {
                             itemText.text = "코디 아이템 없음"
                         }
                     } else {
+                        // 기존 아이템 수량 텍스트
                         val count = (snapshot.getLong(firebasePath) ?: return@addOnSuccessListener).toInt()
                         itemText.text = "x $count"
                     }
+
                 }
                 .addOnFailureListener {
                     itemText.text = if (!isCody) "x -" else "알 수 없음"
@@ -184,24 +223,6 @@ class PlantCareActivity : AppCompatActivity() {
             Toast.makeText(this, "⚠️ 네트워크 오류 (예외)", Toast.LENGTH_SHORT).show()
         }
 
-    }
 
-    fun PlantCareActivity.showLogoutDialog(activity: PlantCareActivity) {
-        AlertDialog.Builder(activity)
-            .setTitle("로그아웃")
-            .setMessage("정말 로그아웃 하시겠습니까?")
-            .setPositiveButton("네") { dialog, _ ->
-                FirebaseAuth.getInstance().signOut()
-                val intent = Intent(activity, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                activity.startActivity(intent)
-                activity.finish()
-            }
-            .setNegativeButton("아니요") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
     }
-
 }
