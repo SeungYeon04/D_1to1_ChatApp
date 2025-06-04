@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/speech_bubble_bg"
+    android:elevation="8dp"
+    android:padding="20dp"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI가 채팅을 읽어\n상대의 감정을\n유추하여줍니다\nAI학습기능 OFF는\n환경설정에서!"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:lineHeight="20dp"
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+</LinearLayout> 
