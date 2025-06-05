@@ -54,7 +54,7 @@
 
         <!-- 다른버튼 -->
         <Button
-            android:id="@+id/startButton"
+            android:id="@+id/websiteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +67,7 @@
             android:textSize="25sp"></Button>
 
         <Button
-            android:id="@+id/startButton"
+            android:id="@+id/comingSoonButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
