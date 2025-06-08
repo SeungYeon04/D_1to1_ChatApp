@@ -1,75 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/start"
     tools:context=".MainActivity">
 
-    <!-- 상단 흰 배경 -->
-    <LinearLayout
+    <!-- 상단 갈색 띠 -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="#FFFFFF" />
+        android:layout_height="55dp"
+        android:background="#7F6C5E"
+        android:layout_gravity="top" />
 
-    <!-- 본문: 녹색 배경 + 콘텐츠 중앙 정렬 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@drawable/bg_color01">
+    <!-- Love Garden Title Image -->
+    <ImageView
+        android:id="@+id/login_title_image"
+        android:layout_width="wrap_content"
+        android:layout_height="380dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Love Garden Title"
+        android:src="@drawable/start_title" />
 
-        <!-- 앱 이름 -->
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="앱 이름"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+    <!-- 시작하기 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStart"
+        android:layout_width="250dp"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="380dp"
+        android:background="@drawable/login_btn_bg"
+        android:fontFamily="@font/bmjua"
+        android:text="시작하기"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-        <!-- 식물 이미지 -->
-        <ImageView
-            android:id="@+id/plantImage"
-            android:layout_width="327dp"
-            android:layout_height="211dp"
-            android:layout_gravity="center"
+    <!-- 공식 웹사이트 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnOfficialWebsite"
+        android:layout_width="250dp"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="290dp"
+        android:background="@drawable/login_btn_bg"
+        android:fontFamily="@font/bmjua"
+        android:text="공식 웹사이트"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-            android:layout_marginBottom="40dp"
-            android:contentDescription="식물 이미지" />
+    <!-- 기능준비중 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFeatureReady"
+        android:layout_width="250dp"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/login_btn_bg"
+        android:fontFamily="@font/bmjua"
+        android:text="기능준비중"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-        <!-- 시작하기 버튼 -->
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:text="시작하기"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:backgroundTint="#228B22"
-            android:layout_marginBottom="40dp"
-            android:layout_gravity="center" />
-
-        <!-- 게임설명 -->
-        <TextView
-            android:id="@+id/howToPlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="게임설명"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:gravity="center" />
-    </LinearLayout>
-
-    <!-- 하단 흰 배경 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="#FFFFFF" />
-</LinearLayout>
+</FrameLayout>

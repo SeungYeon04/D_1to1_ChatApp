@@ -18,7 +18,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start);
         enableEdgeToEdge();
 
-        startButton = findViewById<Button>(R.id.startButton);
+        startButton = findViewById<Button>(R.id.btnStart);
 
         startButton.setOnClickListener {
 
