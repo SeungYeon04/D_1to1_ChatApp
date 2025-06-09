@@ -21,7 +21,8 @@ class CodeInputActivity : AppCompatActivity() {
     private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
     private lateinit var btnJoin: Button
-    private lateinit var usersRef: DatabaseReference
+    private lateinit var allUsersRef: DatabaseReference
+    private lateinit var myUsersRef: DatabaseReference
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
 
@@ -32,7 +33,7 @@ class CodeInputActivity : AppCompatActivity() {
         etCode = findViewById(R.id.etCodeInput)
         btnJoin = findViewById(R.id.btnJoin)
         mAuth = FirebaseAuth.getInstance()
-        usersRef = FirebaseDatabase.getInstance().getReference("users")
+        allUsersRef = FirebaseDatabase.getInstance().getReference("users")
         firestore = FirebaseFirestore.getInstance()
         myCodeText = findViewById(R.id.my_code_text)
 
@@ -40,9 +41,9 @@ class CodeInputActivity : AppCompatActivity() {
         if (currentUser != null) {
             val uid = currentUser.uid
 
-            usersRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+            myUsersRef = allUsersRef.child(uid)
 
-            usersRef.addValueEventListener(object : ValueEventListener {
+            myUsersRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val code = snapshot.child("code").getValue(String::class.java)
                     myCodeText.text = code ?: "코드 생성이 되지 않았습니다."
@@ -77,7 +78,7 @@ class CodeInputActivity : AppCompatActivity() {
             val currentUid = currentUser.uid
 
             // Realtime Database의 "users"에서 입력한 code와 일치하는 사용자를 검색
-            val query = usersRef.orderByChild("code").equalTo(inputCode)
+            val query = allUsersRef.orderByChild("code").equalTo(inputCode)
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
@@ -101,7 +102,7 @@ class CodeInputActivity : AppCompatActivity() {
                         }
 
                         // 현재 사용자의 정보를 "users" 노드에서 조회
-                        usersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
+                        allUsersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (!snapshot.exists()) {
                                     Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
