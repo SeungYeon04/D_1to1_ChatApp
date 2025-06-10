@@ -26,10 +26,11 @@
     <!-- 시작하기 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStart"
+
         android:layout_width="250dp"
         android:layout_height="55dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="280dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="400dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
         android:text="시작하기🪴"
@@ -38,12 +39,15 @@
         android:textStyle="bold" />
 
     <!-- 공식 웹사이트 버튼 -->
+
+    <!-- 기능준비중 버튼 -->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnOfficialWebsite"
         android:layout_width="250dp"
         android:layout_height="55dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="180dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="500dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
         android:text="공식 웹사이트"
@@ -51,13 +55,12 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <!-- 기능준비중 버튼 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFeatureReady"
         android:layout_width="250dp"
         android:layout_height="55dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="80dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="600dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
         android:text="개발자 커피 사주기☕"
