@@ -173,7 +173,7 @@ class CodeInputActivity : AppCompatActivity() {
 
                                 // "plant" 필드 구성 (사진의 구조에 따른 값들)
                                 val plantMap = hashMapOf(
-                                    "experience" to 15,
+                                    "experience" to 1,
                                     "money" to 10
                                 )
                                 roomData["plant"] = plantMap
