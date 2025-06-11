@@ -1,5 +1,7 @@
 package com.example.chatapp_1to1
 
+import android.util.Log
+
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -71,8 +73,10 @@ class PlantCareActivity : AppCompatActivity() {
                     val users = doc.get("users") as? Map<*, *> ?: continue
                     for ((_, value) in users) {
                         val userMap = value as? Map<*, *> ?: continue
-                        if (userMap["uid"] == uid) {
+                        //Log.d("DEBUG_CHECK", "userMap uid=${userMap["uid"]}, my uid=$uid")
+                        if (userMap["uid"] == uid.toString()) {
                             foundRoomId = doc.id
+                            //Toast.makeText(this, "찾은 방 ID: $foundRoomId", Toast.LENGTH_LONG).show()
                             break
                         }
                     }

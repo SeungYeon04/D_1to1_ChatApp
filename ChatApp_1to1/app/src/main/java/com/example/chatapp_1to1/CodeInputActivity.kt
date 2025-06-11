@@ -129,14 +129,14 @@ class CodeInputActivity : AppCompatActivity() {
                                 val usersMap = HashMap<String, Any>()
                                 val currentUserMap = hashMapOf(
                                     "nickname" to currentUserModel.username,
-                                    "uid" to currentUserModel.code
+                                    "uid" to  currentUid   // ✅ 실제 uid로 저장해야 findUserRoomAndRender()에서 매칭 가능
                                 )
                                 usersMap[currentUid] = currentUserMap
 
                                 val matchedUserMap = hashMapOf<String, Any>()
                                 if (matchedUser != null) {
                                     matchedUserMap["nickname"] = matchedUser.username
-                                    matchedUserMap["uid"] = matchedUser.code
+                                    matchedUserMap["uid"] = matchedUid   // ✅ 여기도 matchedUid로!
                                     usersMap[matchedUid] = matchedUserMap
                                 } else {
                                     Toast.makeText(this@CodeInputActivity, "매칭된 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
