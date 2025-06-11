@@ -37,6 +37,11 @@ class CodeInputActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         myCodeText = findViewById(R.id.my_code_text)
 
+        val closeButton = findViewById<TextView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            startActivity(Intent(this, PlantCareActivity::class.java))
+        }
+
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val uid = currentUser.uid

@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- 박스 채우는 색 (초록색으로) -->
-    <solid android:color="#00C903" />
+    <solid android:color="#A69E93" />
 
     <!-- 모서리를 둥글게 -->
     <corners android:radius="30dp" />
