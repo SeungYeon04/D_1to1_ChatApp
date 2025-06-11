@@ -144,22 +144,7 @@ class CodeInputActivity : AppCompatActivity() {
                                 }
                                 roomData["users"] = usersMap
 
-                                // "chat" 필드 구성 (사진 예시와 같이 하드코딩)
-                                val chatMap = hashMapOf<String, Any>(
-                                    "msg1" to hashMapOf(
-                                        "sender" to "관리자",
-                                        "text" to "채팅방이 생성되었습니다",
-                                        "timestamp" to 1677830400000L
-                                    ),
-                                    "msg2" to hashMapOf(
-                                        "sender" to "관리자",
-                                        "text" to "새로운 사용자가 참여했습니다",
-                                        "timestamp" to 1677831000000L
-                                    )
-                                )
-                                roomData["chat"] = chatMap
-
-                                // "item" 필드 구성 (사진의 구조에 따른 값들)
+                                // "item" 필드 구성
                                 val itemMap = hashMapOf<String, Any>(
                                     "codyitem" to hashMapOf(
                                         "myitem" to false,
@@ -171,7 +156,7 @@ class CodeInputActivity : AppCompatActivity() {
                                 )
                                 roomData["item"] = itemMap
 
-                                // "plant" 필드 구성 (사진의 구조에 따른 값들)
+                                // "plant" 필드 구성
                                 val plantMap = hashMapOf(
                                     "experience" to 15,
                                     "money" to 10
