@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private EditText signupTextName;
     private EditText signupTextId;
     private EditText signupPassword;
     private Button btnSignup;
@@ -35,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
 
         signupTextId = findViewById(R.id.SignupTextId);
         signupPassword = findViewById(R.id.SignupPassword);
+        signupTextName = findViewById(R.id.SignupTextName);
         btnSignup = findViewById(R.id.btnSignup);
         loginText = findViewById(R.id.login_text);
         passwordToggle = findViewById(R.id.passwordToggle);
@@ -70,6 +72,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 회원가입 처리
+                String name = signupTextName.getText().toString();
                 String id = signupTextId.getText().toString();
                 String password = signupPassword.getText().toString();
                 
@@ -83,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String uid = mAuth.getCurrentUser().getUid();
                                 String code = generateRandomCode(12);
-                                usersRef.child(uid).setValue(new UserModel(id, password, "캡스톤베이스", code));
+                                usersRef.child(uid).setValue(new UserModel(id, password, name, code));
                                 Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                                 finish();
