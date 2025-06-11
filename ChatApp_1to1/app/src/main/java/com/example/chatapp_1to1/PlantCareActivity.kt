@@ -1,5 +1,7 @@
 package com.example.chatapp_1to1
 
+import android.util.Log
+
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -23,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
+import com.airbnb.lottie.LottieAnimationView
+import android.view.View
+
 
 //와이파이 관련
 fun Context.isInternetAvailable(): Boolean {
@@ -38,45 +43,76 @@ class PlantCareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plant_care)
 
-        // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
-        val roomId = "ABCD1234"
-
-        // 👉 앱 시작 시 식물 렌더링
-        renderPlantImage(roomId)
-
-        // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
-        findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
-            showItemModal(roomId, R.drawable.water_item, "item.wateritem", isCody = false)
-        }
-
-        // ☀️ 햇빛 버튼
-        findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
-            showItemModal(roomId, R.drawable.sun_item, "item.lightitem", isCody = false)
-        }
-
-        // 🌿 영양제 버튼
-        findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
-            showItemModal(roomId, R.drawable.nutrient_item, "item.healthitem", isCody = false)
-        }
-
-        // 👕 코디 버튼 (예: 모자)
-        findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
-            showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
-        }
-
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            val intent = Intent(this, CodeInputActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CodeInputActivity::class.java))
         }
 
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
             showLogoutDialog(this)
         }
 
+        findUserRoomAndRender() // 🔥 핵심 로직
+    }
+
+
+    // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
+    //val roomId = "ABCD1234"
+
+    private fun findUserRoomAndRender() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
+            Toast.makeText(this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("rooms").get()
+            .addOnSuccessListener { querySnapshot ->
+                var foundRoomId: String? = null
+                for (doc in querySnapshot) {
+                    val users = doc.get("users") as? Map<*, *> ?: continue
+                    for ((_, value) in users) {
+                        val userMap = value as? Map<*, *> ?: continue
+                        //Log.d("DEBUG_CHECK", "userMap uid=${userMap["uid"]}, my uid=$uid")
+                        if (userMap["uid"] == uid.toString()) {
+                            foundRoomId = doc.id
+                            //Toast.makeText(this, "찾은 방 ID: $foundRoomId", Toast.LENGTH_LONG).show()
+                            break
+                        }
+                    }
+                    if (foundRoomId != null) break
+                }
+
+                if (foundRoomId != null) {
+                    renderPlantImage(foundRoomId)
+
+                    findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.water_item, "item.wateritem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.sun_item, "item.lightitem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.nutrient_item, "item.healthitem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
+                    }
+
+                } else {
+                    Toast.makeText(this, "해당 유저가 속한 방을 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "방 정보 로딩 실패", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun renderPlantImage(roomId: String) {
-        val plantImage = findViewById<ImageView>(R.id.ivPlant)
+        val plantAnimView = findViewById<LottieAnimationView>(R.id.ivPlant)
         val db = FirebaseFirestore.getInstance()
         val roomRef = db.collection("rooms").document(roomId)
 
@@ -85,23 +121,20 @@ class PlantCareActivity : AppCompatActivity() {
                 try {
                     val exp = (snapshot.getLong("plant.experience") ?: throw Exception("경험치 누락")).toInt()
 
-                    val imageRes = if (exp < 3) {
-                        R.drawable.ch01_plant_level1
-                    } else if (exp < 5) {
-                        R.drawable.ch01_plant_level2
-                    } else if (exp < 10) {
-                        R.drawable.ch01_plant_level3
-                    } else if (exp < 20) {
-                        R.drawable.ch01_plant_level4
-                    } else if (exp < 30) {
-                        R.drawable.ch01_plant_level5
-                    } else {
-                        R.drawable.ch01_plant_max
+                    // 🔥 경험치 → 애니메이션 프레임 위치 지정
+                    val frame = when {
+                        exp < 3 -> 20
+                        exp < 5 -> 40
+                        exp < 10 -> 60
+                        exp < 20 -> 90
+                        exp < 30 -> 120
+                        else -> 144
                     }
 
-                    plantImage.setImageResource(imageRes)
-                    // 앱 시작 시 ivPlant는 GONE 상태 Firestore에서 경험치 성공적으로 불러오면 → setImageResource() + VISIBLE
-                    plantImage.visibility = ImageView.VISIBLE
+                    plantAnimView.setAnimation("plants/plant01.json")
+                    plantAnimView.setProgress(frame / 144f) // 0.0 ~ 1.0 비율로 지정
+                    plantAnimView.pauseAnimation()
+                    plantAnimView.visibility = View.VISIBLE
 
                 } catch (e: Exception) {
                     Toast.makeText(this, "🌱 식물 상태를 불러올 수 없습니다", Toast.LENGTH_SHORT).show()
@@ -111,6 +144,7 @@ class PlantCareActivity : AppCompatActivity() {
                 Toast.makeText(this, "⚠️ 식물 정보 로딩 실패", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun showItemModal(roomId: String, iconRes: Int, firebasePath: String, isCody: Boolean) {
         val dialog = Dialog(this)

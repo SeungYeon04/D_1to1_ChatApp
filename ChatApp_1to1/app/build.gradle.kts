@@ -75,4 +75,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-firestore-ktx")
 
+    //lottiefiles json 파일
+    implementation("com.airbnb.android:lottie:6.3.0")
+
 }

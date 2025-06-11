@@ -21,7 +21,8 @@ class CodeInputActivity : AppCompatActivity() {
     private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
     private lateinit var btnJoin: Button
-    private lateinit var usersRef: DatabaseReference
+    private lateinit var allUsersRef: DatabaseReference
+    private lateinit var myUsersRef: DatabaseReference
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
 
@@ -32,17 +33,22 @@ class CodeInputActivity : AppCompatActivity() {
         etCode = findViewById(R.id.etCodeInput)
         btnJoin = findViewById(R.id.btnJoin)
         mAuth = FirebaseAuth.getInstance()
-        usersRef = FirebaseDatabase.getInstance().getReference("users")
+        allUsersRef = FirebaseDatabase.getInstance().getReference("users")
         firestore = FirebaseFirestore.getInstance()
         myCodeText = findViewById(R.id.my_code_text)
+
+        val closeButton = findViewById<TextView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            startActivity(Intent(this, PlantCareActivity::class.java))
+        }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val uid = currentUser.uid
 
-            usersRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+            myUsersRef = allUsersRef.child(uid)
 
-            usersRef.addValueEventListener(object : ValueEventListener {
+            myUsersRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val code = snapshot.child("code").getValue(String::class.java)
                     myCodeText.text = code ?: "코드 생성이 되지 않았습니다."
@@ -77,7 +83,7 @@ class CodeInputActivity : AppCompatActivity() {
             val currentUid = currentUser.uid
 
             // Realtime Database의 "users"에서 입력한 code와 일치하는 사용자를 검색
-            val query = usersRef.orderByChild("code").equalTo(inputCode)
+            val query = allUsersRef.orderByChild("code").equalTo(inputCode)
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
@@ -101,7 +107,7 @@ class CodeInputActivity : AppCompatActivity() {
                         }
 
                         // 현재 사용자의 정보를 "users" 노드에서 조회
-                        usersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
+                        allUsersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (!snapshot.exists()) {
                                     Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -128,14 +134,14 @@ class CodeInputActivity : AppCompatActivity() {
                                 val usersMap = HashMap<String, Any>()
                                 val currentUserMap = hashMapOf(
                                     "nickname" to currentUserModel.username,
-                                    "uid" to currentUserModel.code
+                                    "uid" to  currentUid   // ✅ 실제 uid로 저장해야 findUserRoomAndRender()에서 매칭 가능
                                 )
                                 usersMap[currentUid] = currentUserMap
 
                                 val matchedUserMap = hashMapOf<String, Any>()
                                 if (matchedUser != null) {
                                     matchedUserMap["nickname"] = matchedUser.username
-                                    matchedUserMap["uid"] = matchedUser.code
+                                    matchedUserMap["uid"] = matchedUid   // ✅ 여기도 matchedUid로!
                                     usersMap[matchedUid] = matchedUserMap
                                 } else {
                                     Toast.makeText(this@CodeInputActivity, "매칭된 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
@@ -172,7 +178,7 @@ class CodeInputActivity : AppCompatActivity() {
 
                                 // "plant" 필드 구성 (사진의 구조에 따른 값들)
                                 val plantMap = hashMapOf(
-                                    "experience" to 15,
+                                    "experience" to 1,
                                     "money" to 10
                                 )
                                 roomData["plant"] = plantMap

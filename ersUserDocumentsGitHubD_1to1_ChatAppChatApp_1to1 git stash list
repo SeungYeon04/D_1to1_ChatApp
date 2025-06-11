@@ -1,0 +1,10 @@
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{1}: checkout: moving from H_Start_UI to H_Codepage
+[33m8fc248b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/P_CodeConnectionRepair[m[33m, [m[1;31morigin/H_Start_UI[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdevelop[m[33m, [m[1;32mH_Start_UI[m[33m)[m HEAD@{2}: checkout: moving from H_Codepage to H_Start_UI
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{3}: checkout: moving from H_Start_UI to H_Codepage
+[33m8fc248b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/P_CodeConnectionRepair[m[33m, [m[1;31morigin/H_Start_UI[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdevelop[m[33m, [m[1;32mH_Start_UI[m[33m)[m HEAD@{4}: merge main: Fast-forward
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{5}: checkout: moving from H_Codepage to H_Start_UI
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{6}: checkout: moving from H_Start_UI to H_Codepage
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{7}: checkout: moving from H_Codepage to H_Start_UI
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{8}: reset: moving to HEAD
+[33m06b3b8e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mH_Codepage[m[33m, [m[1;31morigin/H_Codepage[m[33m)[m HEAD@{9}: merge develop: Fast-forward
