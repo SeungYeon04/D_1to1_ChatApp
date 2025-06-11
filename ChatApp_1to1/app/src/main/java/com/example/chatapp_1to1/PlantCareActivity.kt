@@ -41,41 +41,70 @@ class PlantCareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plant_care)
 
-        // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
-        val roomId = "ABCD1234"
-
-        // 👉 앱 시작 시 식물 렌더링
-        renderPlantImage(roomId)
-
-        // 💧 물 버튼 (이미지 : R.drawable.water_item.png)
-        findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
-            showItemModal(roomId, R.drawable.water_item, "item.wateritem", isCody = false)
-        }
-
-        // ☀️ 햇빛 버튼
-        findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
-            showItemModal(roomId, R.drawable.sun_item, "item.lightitem", isCody = false)
-        }
-
-        // 🌿 영양제 버튼
-        findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
-            showItemModal(roomId, R.drawable.nutrient_item, "item.healthitem", isCody = false)
-        }
-
-        // 👕 코디 버튼 (예: 모자)
-        findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
-            showItemModal(roomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
-        }
-
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            val intent = Intent(this, CodeInputActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CodeInputActivity::class.java))
         }
 
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
             showLogoutDialog(this)
         }
 
+        findUserRoomAndRender() // 🔥 핵심 로직
+    }
+
+
+    // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
+    //val roomId = "ABCD1234"
+
+    private fun findUserRoomAndRender() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid == null) {
+            Toast.makeText(this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("rooms").get()
+            .addOnSuccessListener { querySnapshot ->
+                var foundRoomId: String? = null
+                for (doc in querySnapshot) {
+                    val users = doc.get("users") as? Map<*, *> ?: continue
+                    for ((_, value) in users) {
+                        val userMap = value as? Map<*, *> ?: continue
+                        if (userMap["uid"] == uid) {
+                            foundRoomId = doc.id
+                            break
+                        }
+                    }
+                    if (foundRoomId != null) break
+                }
+
+                if (foundRoomId != null) {
+                    renderPlantImage(foundRoomId)
+
+                    findViewById<ImageButton>(R.id.btnWater).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.water_item, "item.wateritem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnSunlight).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.sun_item, "item.lightitem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnNutrient).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.nutrient_item, "item.healthitem", isCody = false)
+                    }
+
+                    findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
+                        showItemModal(foundRoomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
+                    }
+
+                } else {
+                    Toast.makeText(this, "해당 유저가 속한 방을 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "방 정보 로딩 실패", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun renderPlantImage(roomId: String) {

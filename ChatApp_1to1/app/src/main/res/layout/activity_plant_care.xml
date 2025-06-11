@@ -123,7 +123,7 @@
 
     <!-- 하단 푸터 - 배경 -->
 
-    <!-- 🪴 고정된 화분 (항상 보임) -->
+    <!-- 🪴 고정된 화분 (항상 보임)
     <ImageView
         android:id="@+id/ivPot"
 
@@ -136,6 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
     />
+    -->
 
     <!-- 🌿 경험치 기반 식물 (처음엔 GONE)
     <ImageView
@@ -150,6 +151,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
      -->
+
+    <!-- 외부 화분 -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ivPlant"
         android:layout_width="150dp"
