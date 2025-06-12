@@ -260,9 +260,11 @@ object RoomCreator {
                         firestore.collection("rooms").document(roomId)
                             .set(roomData)
                             .addOnSuccessListener {
-                                // 채팅방 생성 후 양쪽 사용자 Realtime Database의 "partnerUid" 필드를 업데이트함
+                                // 채팅방 생성 후 양쪽 사용자 Realtime Database의 "partnerUid"와 "roomId" 필드를 업데이트함
                                 allUsersRef.child(senderUid).child("partnerUid").setValue(receiverUid)
+                                allUsersRef.child(senderUid).child("roomId").setValue(roomId)
                                 allUsersRef.child(receiverUid).child("partnerUid").setValue(senderUid)
+                                allUsersRef.child(receiverUid).child("roomId").setValue(roomId)
                                 callback(roomId, null)
                             }
                             .addOnFailureListener { e ->
