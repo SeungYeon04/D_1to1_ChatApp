@@ -25,6 +25,7 @@ import com.google.firebase.firestore.Source
 
 import com.airbnb.lottie.LottieAnimationView
 import android.view.View
+import kotlin.jvm.java
 
 
 //와이파이 관련
@@ -68,7 +69,7 @@ class PlantCareActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            val intent = Intent(this, CodeInputActivity::class.java)
+            val intent = Intent(this, ConnectionRequestsActivity::class.java)
             startActivity(intent)
         }
 

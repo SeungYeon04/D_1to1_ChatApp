@@ -57,6 +57,11 @@
             android:name=".ChatActivity"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ConnectionRequestsActivity"
+            android:exported="true" />
+
+
     </application>
 
 </manifest>
