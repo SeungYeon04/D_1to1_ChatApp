@@ -69,7 +69,7 @@ class PlantCareActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            val intent = Intent(this, ConnectionRequestsActivity::class.java)
+            val intent = Intent(this, CodeInputActivity::class.java)
             startActivity(intent)
         }
 

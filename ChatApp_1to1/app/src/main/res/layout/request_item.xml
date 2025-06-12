@@ -13,21 +13,34 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="신청자 이름"
-        android:textSize="18sp" />
+        android:fontFamily="@font/bmjua"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <!-- 수락 버튼 -->
-    <Button
+
+    <!-- 거절 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/accept_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/login_btn_bg"
+        android:fontFamily="@font/bmjua"
         android:text="수락"
-        android:layout_marginEnd="8dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <!-- 거절 버튼 -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/reject_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="거절" />
+        android:layout_marginStart="10dp"
+        android:background="@drawable/login_btn_bg"
+        android:fontFamily="@font/bmjua"
+        android:text="거절"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
