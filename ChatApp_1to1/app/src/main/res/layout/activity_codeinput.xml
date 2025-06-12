@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5BC"
+    android:background="@drawable/bg_send"
     tools:context=".CodeInputActivity">
 
     <!-- 상단 헤더 - 녹색 배경 -->
@@ -12,7 +12,7 @@
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#4CAF50"
+        android:background="#7F6C5E"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 메뉴 버튼 (왼쪽) -->
@@ -29,16 +29,18 @@
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
 
     <!-- 말풍선 이미지 (오른쪽) -->
+
     <ImageView
         android:id="@+id/ivSpeechBubble"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="39dp"
+        android:layout_height="46dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="말풍선"
         android:src="@drawable/ic_speech_bubble"
         app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
+        app:layout_constraintTop_toTopOf="@+id/headerBackground"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/list_open_button"
@@ -58,9 +60,9 @@
 
     <RelativeLayout
         android:id="@+id/codeInputBox"
-        android:layout_width="320dp"
-        android:layout_height="270dp"
-        android:background="@drawable/bt_green_rounded"
+        android:layout_width="322dp"
+        android:layout_height="249dp"
+        android:background="@drawable/bt_brown01_rounded"
         android:clipToPadding="false"
         android:elevation="4dp"
         android:padding="16dp"
@@ -88,9 +90,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/close_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="코드를 입력해주세요"
-            android:textColor="#000000"
+            android:layout_marginTop="0dp"
+            android:text="상대의 코드를 입력해주세요"
+            android:textColor="#ffffff"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -110,31 +112,34 @@
         <!-- 내 코드 텍스트 -->
         <TextView
             android:id="@+id/my_code_text"
-            android:layout_width="wrap_content"
+            android:layout_width="248dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/etCodeInput"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
+
+            android:background="@drawable/bt_gray01_rounded"
+            android:padding="6dp"
             android:text="내 코드"
-            android:textColor="#000000"
+            android:textColor="#666666"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <!-- 연결 버튼 - ID 변경 -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnJoin"
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="100dp"
             android:layout_height="45dp"
             android:layout_below="@id/my_code_text"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
-            android:background="@drawable/bt_green02_rounded"
+            android:background="@drawable/bt_brown02_rounded"
             android:backgroundTint="@null"
             android:text="연 결"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="16sp"
-            android:textStyle="bold"
-            style="@style/Widget.AppCompat.Button" />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

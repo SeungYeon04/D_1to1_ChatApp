@@ -123,7 +123,7 @@
 
     <!-- 하단 푸터 - 배경 -->
 
-    <!-- 🪴 고정된 화분 (항상 보임) -->
+    <!-- 🪴 고정된 화분 (항상 보임)
     <ImageView
         android:id="@+id/ivPot"
 
@@ -136,6 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
     />
+    -->
 
     <!-- 🌿 경험치 기반 식물 (처음엔 GONE)
     <ImageView
@@ -150,11 +151,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
      -->
+
+    <!-- 외부 화분 -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ivPlant"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="75dp"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="40dp"
         android:visibility="gone"
         app:lottie_fileName="plants/plant01.json"
         app:lottie_autoPlay="false"
@@ -179,14 +182,14 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:background="@drawable/bt_brown01_rounded"
-        android:src="@drawable/ic_water"
-        android:scaleType="centerInside"
         android:padding="12dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_water"
         app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/btnSunlight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSunlight" />
+        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
 
     <ImageButton
         android:id="@+id/btnSunlight"
