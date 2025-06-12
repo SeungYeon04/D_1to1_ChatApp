@@ -1,5 +1,7 @@
 package com.example.chatapp_1to1
 
+import android.util.Log
+
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -45,32 +47,9 @@ class PlantCareActivity : AppCompatActivity() {
         setContentView(R.layout.activity_plant_care)
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser == null) {
-                Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val currentUid = currentUser.uid
-            val myUserRef = FirebaseDatabase.getInstance().getReference("users").child(currentUid)
 
-            myUserRef.child("roomId").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val myRoomId = snapshot.getValue(String::class.java)
-                    if (myRoomId.isNullOrEmpty()) {
-                        startActivity(Intent(this@PlantCareActivity, CodeInputActivity::class.java))
-                    } else {
-                        val intent = Intent(this@PlantCareActivity, ChatActivity::class.java)
-                        intent.putExtra("roomId", myRoomId)
-                        startActivity(intent)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@PlantCareActivity, "데이터베이스 오류: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+            startActivity(Intent(this, CodeInputActivity::class.java))
         }
-
 
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
             showLogoutDialog(this)
@@ -82,6 +61,7 @@ class PlantCareActivity : AppCompatActivity() {
 
     // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
     //val roomId = "ABCD1234"
+
 
     private fun findUserRoomAndRender() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
