@@ -137,7 +137,7 @@
         app:layout_constraintEnd_toEndOf="parent"
     />
 
-    <!-- 🌿 경험치 기반 식물 (처음엔 GONE) -->
+    <!-- 🌿 경험치 기반 식물 (처음엔 GONE)
     <ImageView
         android:id="@+id/ivPlant"
         android:layout_width="150dp"
@@ -149,6 +149,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+     -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/ivPlant"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="75dp"
+        android:visibility="gone"
+        app:lottie_fileName="plants/plant01.json"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!-- ✅ 버튼 영역만 위에 몰아서 -->
     <View

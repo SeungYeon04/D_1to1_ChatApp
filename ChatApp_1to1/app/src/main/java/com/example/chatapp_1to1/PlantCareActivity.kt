@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
+import com.airbnb.lottie.LottieAnimationView
+import android.view.View
+
 
 //와이파이 관련
 fun Context.isInternetAvailable(): Boolean {
@@ -76,7 +79,7 @@ class PlantCareActivity : AppCompatActivity() {
     }
 
     private fun renderPlantImage(roomId: String) {
-        val plantImage = findViewById<ImageView>(R.id.ivPlant)
+        val plantAnimView = findViewById<LottieAnimationView>(R.id.ivPlant)
         val db = FirebaseFirestore.getInstance()
         val roomRef = db.collection("rooms").document(roomId)
 
@@ -85,23 +88,20 @@ class PlantCareActivity : AppCompatActivity() {
                 try {
                     val exp = (snapshot.getLong("plant.experience") ?: throw Exception("경험치 누락")).toInt()
 
-                    val imageRes = if (exp < 3) {
-                        R.drawable.ch01_plant_level1
-                    } else if (exp < 5) {
-                        R.drawable.ch01_plant_level2
-                    } else if (exp < 10) {
-                        R.drawable.ch01_plant_level3
-                    } else if (exp < 20) {
-                        R.drawable.ch01_plant_level4
-                    } else if (exp < 30) {
-                        R.drawable.ch01_plant_level5
-                    } else {
-                        R.drawable.ch01_plant_max
+                    // 🔥 경험치 → 애니메이션 프레임 위치 지정
+                    val frame = when {
+                        exp < 3 -> 20
+                        exp < 5 -> 40
+                        exp < 10 -> 60
+                        exp < 20 -> 90
+                        exp < 30 -> 120
+                        else -> 144
                     }
 
-                    plantImage.setImageResource(imageRes)
-                    // 앱 시작 시 ivPlant는 GONE 상태 Firestore에서 경험치 성공적으로 불러오면 → setImageResource() + VISIBLE
-                    plantImage.visibility = ImageView.VISIBLE
+                    plantAnimView.setAnimation("plants/plant01.json")
+                    plantAnimView.setProgress(frame / 144f) // 0.0 ~ 1.0 비율로 지정
+                    plantAnimView.pauseAnimation()
+                    plantAnimView.visibility = View.VISIBLE
 
                 } catch (e: Exception) {
                     Toast.makeText(this, "🌱 식물 상태를 불러올 수 없습니다", Toast.LENGTH_SHORT).show()
@@ -111,6 +111,7 @@ class PlantCareActivity : AppCompatActivity() {
                 Toast.makeText(this, "⚠️ 식물 정보 로딩 실패", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun showItemModal(roomId: String, iconRes: Int, firebasePath: String, isCody: Boolean) {
         val dialog = Dialog(this)
