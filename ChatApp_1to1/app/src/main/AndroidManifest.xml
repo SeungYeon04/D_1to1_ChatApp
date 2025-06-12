@@ -58,6 +58,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ConnectionRequestsActivity"
+            android:exported="true" />
+
+
     </application>
 
 </manifest>

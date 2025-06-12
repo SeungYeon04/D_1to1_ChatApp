@@ -20,6 +20,7 @@ class CodeInputActivity : AppCompatActivity() {
 
     private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
+    private lateinit var btnlist: Button
     private lateinit var btnJoin: Button
     private lateinit var allUsersRef: DatabaseReference
     private lateinit var myUsersRef: DatabaseReference
@@ -30,12 +31,13 @@ class CodeInputActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_codeinput)
 
+        btnlist = findViewById(R.id.list_open_button)
         etCode = findViewById(R.id.etCodeInput)
         btnJoin = findViewById(R.id.btnJoin)
+        myCodeText = findViewById(R.id.my_code_text)
         mAuth = FirebaseAuth.getInstance()
         allUsersRef = FirebaseDatabase.getInstance().getReference("users")
         firestore = FirebaseFirestore.getInstance()
-        myCodeText = findViewById(R.id.my_code_text)
 
         val closeButton = findViewById<TextView>(R.id.close_button)
         closeButton.setOnClickListener {
@@ -45,7 +47,6 @@ class CodeInputActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val uid = currentUser.uid
-
             myUsersRef = allUsersRef.child(uid)
 
             myUsersRef.addValueEventListener(object : ValueEventListener {
@@ -63,8 +64,12 @@ class CodeInputActivity : AppCompatActivity() {
                 }
             })
         } else {
-            // 사용자가 로그인되어 있지 않은 경우 예외 처리(예: 로그인 화면으로 이동)
             myCodeText.text = "로그인이 필요합니다."
+        }
+
+        btnlist.setOnClickListener {
+            val intent = Intent(this, ConnectionRequestsActivity::class.java)
+            startActivity(intent)
         }
 
         btnJoin.setOnClickListener {
@@ -197,27 +202,18 @@ class CodeInputActivity : AppCompatActivity() {
                                     .addOnFailureListener { e ->
                                         Toast.makeText(this@CodeInputActivity, "채팅방 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                                     }
-                            }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                Toast.makeText(
-                                    this@CodeInputActivity,
-                                    "현재 사용자 정보를 불러오는 중 오류: ${error.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
-                        })
+                            .addOnFailureListener { e ->
+                                Toast.makeText(this@CodeInputActivity, "요청 전송 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
                     } else {
                         Toast.makeText(this@CodeInputActivity, "입력한 코드와 일치하는 사용자가 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        this@CodeInputActivity,
-                        "사용자 검색 중 오류: ${error.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@CodeInputActivity, "사용자 검색 중 오류: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
         }

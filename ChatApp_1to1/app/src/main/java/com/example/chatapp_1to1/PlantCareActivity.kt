@@ -12,6 +12,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -21,12 +22,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
-
-import com.airbnb.lottie.LottieAnimationView
-import android.view.View
 
 
 //와이파이 관련
@@ -44,6 +47,7 @@ class PlantCareActivity : AppCompatActivity() {
         setContentView(R.layout.activity_plant_care)
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
+
             startActivity(Intent(this, CodeInputActivity::class.java))
         }
 
@@ -57,6 +61,7 @@ class PlantCareActivity : AppCompatActivity() {
 
     // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
     //val roomId = "ABCD1234"
+
 
     private fun findUserRoomAndRender() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
