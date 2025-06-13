@@ -108,6 +108,11 @@ class CodeInputActivity : AppCompatActivity() {
                             return
                         }
 
+                        if (matchedSnapshot.child("partnerUid").exists()) {
+                            Toast.makeText(this@CodeInputActivity, "해당 사용자는 이미 연결된 상태입니다.", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
                         // 연결 요청 데이터를 Firestore에 저장
                         val requestData = hashMapOf(
                             "senderUid" to currentUid,
