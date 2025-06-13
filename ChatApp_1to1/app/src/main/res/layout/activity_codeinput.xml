@@ -75,7 +75,7 @@
 
         <!-- 닫기 버튼 (X) -->
         <TextView
-            android:id="@+id/close_button"
+            android:id="@+id/closecode_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -90,7 +90,7 @@
             android:id="@+id/enter_code_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/close_button"
+            android:layout_below="@id/closecode_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp"
             android:text="상대의 코드를 입력해주세요"

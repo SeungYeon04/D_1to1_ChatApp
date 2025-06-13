@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CodeInputActivity : AppCompatActivity() {
 
+    private lateinit var btnclose: TextView
     private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
     private lateinit var btnlist: Button
@@ -31,6 +32,7 @@ class CodeInputActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_codeinput)
 
+        btnclose = findViewById(R.id.closecode_button)
         btnlist = findViewById(R.id.list_open_button)
         etCode = findViewById(R.id.etCodeInput)
         btnJoin = findViewById(R.id.btnJoin)
@@ -132,6 +134,12 @@ class CodeInputActivity : AppCompatActivity() {
                     Toast.makeText(this@CodeInputActivity, "사용자 검색 중 오류: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        btnclose.setOnClickListener {
+            var Intent = Intent(applicationContext, PlantCareActivity::class.java)
+            startActivity(Intent)
+            finish()
         }
     }
 }
