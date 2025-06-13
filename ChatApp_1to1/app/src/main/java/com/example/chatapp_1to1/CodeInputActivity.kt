@@ -39,12 +39,7 @@ class CodeInputActivity : AppCompatActivity() {
         allUsersRef = FirebaseDatabase.getInstance().getReference("users")
         firestore = FirebaseFirestore.getInstance()
 
-        val closeButton = findViewById<TextView>(R.id.close_button)
-        closeButton.setOnClickListener {
-            startActivity(Intent(this, PlantCareActivity::class.java))
-        }
-
-        val currentUser = FirebaseAuth.getInstance().currentUser
+        val currentUser = mAuth.currentUser
         if (currentUser != null) {
             val uid = currentUser.uid
             myUsersRef = allUsersRef.child(uid)
@@ -111,98 +106,19 @@ class CodeInputActivity : AppCompatActivity() {
                             return
                         }
 
-                        // 현재 사용자의 정보를 "users" 노드에서 조회
-                        allUsersRef.child(currentUid).addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                if (!snapshot.exists()) {
-                                    Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
-                                    return
-                                }
-                                val currentUserModel = snapshot.getValue(UserModel::class.java)
-                                if (currentUserModel == null) {
-                                    Toast.makeText(this@CodeInputActivity, "현재 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
-                                    return
-                                }
+                        // 연결 요청 데이터를 Firestore에 저장
+                        val requestData = hashMapOf(
+                            "senderUid" to currentUid,
+                            "receiverUid" to matchedUid,
+                            "status" to "pending",
+                            "timestamp" to FieldValue.serverTimestamp()
+                        )
 
-                                // 두 uid를 사전순으로 결합하여 채팅방 고유 ID 생성
-                                val roomId = if (currentUid < matchedUid!!) {
-                                    "${currentUid}_$matchedUid"
-                                } else {
-                                    "${matchedUid}_$currentUid"
-                                }
-
-                                // Firestore에 저장할 채팅방 데이터 구성
-                                val roomData = HashMap<String, Any>()
-                                roomData["createdAt"] = FieldValue.serverTimestamp()
-
-                                // "users" 필드 구성 (회원가입 시 저장된 username은 nickname, code는 uid로 사용)
-                                val usersMap = HashMap<String, Any>()
-                                val currentUserMap = hashMapOf(
-                                    "nickname" to currentUserModel.username,
-                                    "uid" to  currentUid   // ✅ 실제 uid로 저장해야 findUserRoomAndRender()에서 매칭 가능
-                                )
-                                usersMap[currentUid] = currentUserMap
-
-                                val matchedUserMap = hashMapOf<String, Any>()
-                                if (matchedUser != null) {
-                                    matchedUserMap["nickname"] = matchedUser.username
-                                    matchedUserMap["uid"] = matchedUid   // ✅ 여기도 matchedUid로!
-                                    usersMap[matchedUid] = matchedUserMap
-                                } else {
-                                    Toast.makeText(this@CodeInputActivity, "매칭된 사용자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
-                                    return
-                                }
-                                roomData["users"] = usersMap
-
-                                // "chat" 필드 구성 (사진 예시와 같이 하드코딩)
-                                val chatMap = hashMapOf<String, Any>(
-                                    "msg1" to hashMapOf(
-                                        "sender" to "관리자",
-                                        "text" to "채팅방이 생성되었습니다",
-                                        "timestamp" to 1677830400000L
-                                    ),
-                                    "msg2" to hashMapOf(
-                                        "sender" to "관리자",
-                                        "text" to "새로운 사용자가 참여했습니다",
-                                        "timestamp" to 1677831000000L
-                                    )
-                                )
-                                roomData["chat"] = chatMap
-
-                                // "item" 필드 구성 (사진의 구조에 따른 값들)
-                                val itemMap = hashMapOf<String, Any>(
-                                    "codyitem" to hashMapOf(
-                                        "myitem" to false,
-                                        "price" to 100
-                                    ),
-                                    "healthitem" to 0,
-                                    "lightitem" to 0,
-                                    "wateritem" to 0
-                                )
-                                roomData["item"] = itemMap
-
-                                // "plant" 필드 구성 (사진의 구조에 따른 값들)
-                                val plantMap = hashMapOf(
-                                    "experience" to 1,
-                                    "money" to 10
-                                )
-                                roomData["plant"] = plantMap
-
-                                // Cloud Firestore의 "rooms" 컬렉션에 채팅방 문서 생성
-                                firestore.collection("rooms").document(roomId)
-                                    .set(roomData)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this@CodeInputActivity, "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show()
-                                        // ChatActivity 시작
-                                        val intent = Intent(this@CodeInputActivity, ChatActivity::class.java)
-                                        intent.putExtra("roomId", roomId)
-                                        startActivity(intent)
-                                        finish()
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Toast.makeText(this@CodeInputActivity, "채팅방 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                                    }
-
+                        firestore.collection("connectionRequests")
+                            .add(requestData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@CodeInputActivity, "연결 요청이 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                                // TODO: 신청 받은 사람에게 알림이 갈 수 있도록 로직 추가
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(this@CodeInputActivity, "요청 전송 실패: ${e.message}", Toast.LENGTH_SHORT).show()
