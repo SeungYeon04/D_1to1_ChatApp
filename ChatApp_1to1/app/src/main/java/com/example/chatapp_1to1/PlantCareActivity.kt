@@ -1,7 +1,5 @@
 package com.example.chatapp_1to1
 
-import android.util.Log
-
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -12,6 +10,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -21,12 +20,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
-
-import com.airbnb.lottie.LottieAnimationView
-import android.view.View
 
 
 //와이파이 관련
@@ -44,8 +45,32 @@ class PlantCareActivity : AppCompatActivity() {
         setContentView(R.layout.activity_plant_care)
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
-            startActivity(Intent(this, CodeInputActivity::class.java))
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser == null) {
+                Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val currentUid = currentUser.uid
+            val myUserRef = FirebaseDatabase.getInstance().getReference("users").child(currentUid)
+
+            myUserRef.child("roomId").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val myRoomId = snapshot.getValue(String::class.java)
+                    if (myRoomId.isNullOrEmpty()) {
+                        startActivity(Intent(this@PlantCareActivity, CodeInputActivity::class.java))
+                    } else {
+                        val intent = Intent(this@PlantCareActivity, ChatActivity::class.java)
+                        intent.putExtra("roomId", myRoomId)
+                        startActivity(intent)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@PlantCareActivity, "데이터베이스 오류: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
+
 
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
             showLogoutDialog(this)
@@ -58,6 +83,7 @@ class PlantCareActivity : AppCompatActivity() {
     // firebace의 임시 데이터 사용 나중엔 유동적으로 받아오기
     //val roomId = "ABCD1234"
 
+
     private fun findUserRoomAndRender() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid == null) {
@@ -65,24 +91,12 @@ class PlantCareActivity : AppCompatActivity() {
             return
         }
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection("rooms").get()
-            .addOnSuccessListener { querySnapshot ->
-                var foundRoomId: String? = null
-                for (doc in querySnapshot) {
-                    val users = doc.get("users") as? Map<*, *> ?: continue
-                    for ((_, value) in users) {
-                        val userMap = value as? Map<*, *> ?: continue
-                        //Log.d("DEBUG_CHECK", "userMap uid=${userMap["uid"]}, my uid=$uid")
-                        if (userMap["uid"] == uid.toString()) {
-                            foundRoomId = doc.id
-                            //Toast.makeText(this, "찾은 방 ID: $foundRoomId", Toast.LENGTH_LONG).show()
-                            break
-                        }
-                    }
-                    if (foundRoomId != null) break
-                }
+        val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
 
+        // 해당 유저의 roomId 필드 값 읽기
+        userRef.child("roomId").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val foundRoomId = snapshot.getValue(String::class.java)
                 if (foundRoomId != null) {
                     renderPlantImage(foundRoomId)
 
@@ -101,14 +115,15 @@ class PlantCareActivity : AppCompatActivity() {
                     findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
                         showItemModal(foundRoomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
                     }
-
                 } else {
-                    Toast.makeText(this, "해당 유저가 속한 방을 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@PlantCareActivity, "해당 유저에 연결된 방 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "방 정보 로딩 실패", Toast.LENGTH_SHORT).show()
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@PlantCareActivity, "방 정보 로딩 실패: ${error.message}", Toast.LENGTH_SHORT).show()
             }
+        })
     }
 
     private fun renderPlantImage(roomId: String) {
