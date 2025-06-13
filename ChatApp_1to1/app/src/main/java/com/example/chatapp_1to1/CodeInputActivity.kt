@@ -1,5 +1,8 @@
 package com.example.chatapp_1to1
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -64,6 +67,13 @@ class CodeInputActivity : AppCompatActivity() {
             myCodeText.text = "로그인이 필요합니다."
         }
 
+        myCodeText.setOnClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", myCodeText.text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "코드가 복사되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+
         btnlist.setOnClickListener {
             val intent = Intent(this, ConnectionRequestsActivity::class.java)
             startActivity(intent)
@@ -76,7 +86,6 @@ class CodeInputActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 현재 로그인한 사용자 정보 확인
             val currentUser = mAuth.currentUser
             if (currentUser == null) {
                 Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
