@@ -16,6 +16,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp" />
 
+    <!-- 닫기 버튼 (X) -->
+    <TextView
+        android:id="@+id/closelist_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        android:text="X"
+        android:fontFamily="@font/bmjua"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <!-- 신청 목록 -->
     <ListView
         android:id="@+id/request_list"

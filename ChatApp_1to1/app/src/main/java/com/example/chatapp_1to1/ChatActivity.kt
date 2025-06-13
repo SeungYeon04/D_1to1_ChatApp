@@ -1,16 +1,14 @@
 package com.example.chatapp_1to1
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
@@ -139,6 +137,8 @@ class ChatActivity : AppCompatActivity() {
             .setTitle("채팅방 나가기")
             .setMessage("정말 나가시겠습니까?")
             .setPositiveButton("나가기") { _, _ ->
+                var Intent = Intent(applicationContext, PlantCareActivity::class.java)
+                startActivity(Intent)
                 finish()
             }
             .setNegativeButton("취소", null)
