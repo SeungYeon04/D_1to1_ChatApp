@@ -31,20 +31,15 @@
             android:textStyle="bold" />
 
         <!-- 상태 표시 (오른쪽에서 두번째) -->
-        <TextView
-            android:id="@+id/statusText"
+        <include
+            android:id="@+id/emotionBadge"
+            layout="@layout/emotion_badge"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_toStartOf="@+id/closeButton"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/status_bg"
-            android:text="신남"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:paddingHorizontal="12dp" />
+            android:layout_marginBottom="2dp" />
 
         <!-- X 버튼 (가장 오른쪽) -->
         <ImageButton

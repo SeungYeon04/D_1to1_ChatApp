@@ -1,5 +1,7 @@
 package com.example.chatapp_1to1
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import android.view.View.OnClickListener
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -27,12 +30,45 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var emojiButton: ImageButton
     private lateinit var closeButton: ImageButton
     private lateinit var chatTitle: TextView
-    private lateinit var statusText: TextView
+    private lateinit var emotionBadgeLayout: LinearLayout
+    private lateinit var emotionCircle: View
+    private lateinit var emotionText: TextView
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var firestore: FirebaseFirestore
     private lateinit var roomId: String
     private lateinit var currentUserUid: String
     
+    // 감정 상태를 나타내는 enum class 수정
+    private enum class EmotionState(
+        val text: String, 
+        val backgroundColor: Int,
+        val textColor: Int
+    ) {
+        HAPPY(
+            "신남", 
+            Color.parseColor("#87CEEB"),  // 하늘색 배경
+            Color.parseColor("#000080")   // 진한 파란색 글자
+        ),
+        NEUTRAL(
+            "보통", 
+            Color.parseColor("#D3D3D3"),  // 회색 배경
+            Color.parseColor("#000000")   // 검정색 글자
+        ),
+        SAD(
+            "우울", 
+            Color.parseColor("#00008B"),  // 짙은 파란색 배경
+            Color.parseColor("#FFFFFF")   // 흰색 글자
+        ),
+        ANGRY(
+            "화남", 
+            Color.parseColor("#FF0000"),  // 빨간색 배경
+            Color.parseColor("#FFFFFF")   // 흰색 글자
+        )
+    }
+
+    // 감정 점수를 저장할 변수
+    private var emotionScore = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -55,7 +91,9 @@ class ChatActivity : AppCompatActivity() {
         emojiButton = findViewById(R.id.emojiButton)
         closeButton = findViewById(R.id.closeButton)
         chatTitle = findViewById(R.id.chatTitle)
-        statusText = findViewById(R.id.statusText)
+        emotionBadgeLayout = findViewById(R.id.emotionBadge)
+        emotionCircle = findViewById(R.id.emotionCircle)
+        emotionText = findViewById(R.id.emotionText)
 
         // 헤더 정보 설정
         setupHeader()
@@ -99,12 +137,11 @@ class ChatActivity : AppCompatActivity() {
         // 채팅방 제목은 Firestore에서 로드
         loadPartnerInfo()
         
-        // 상태 텍스트 설정 (접속 상태 등으로 나중에 데이터 받아서 처리)
-        val status = intent.getStringExtra("status") ?: "신남"
-        statusText.text = status
+        // 초기 상태 설정
+        updateEmotionStatus(0)
         
         // 상태 텍스트 클릭 리스너 추가
-        statusText.setOnClickListener {
+        emotionBadgeLayout.setOnClickListener {
             showStatusPopup(it)
         }
     }
@@ -157,11 +194,61 @@ class ChatActivity : AppCompatActivity() {
 
                 val messages = mutableListOf<ChatMessage>()
                 snapshot?.documents?.forEach { doc ->
-                    doc.toObject(ChatMessage::class.java)?.let { messages.add(it) }
+                    doc.toObject(ChatMessage::class.java)?.let { message ->
+                        messages.add(message)
+                        // 상대방의 메시지인 경우에만 감정 분석 수행
+                        if (message.senderUid != currentUserUid) {
+                            analyzeEmotion(message.text)
+                        }
+                    }
                 }
                 chatAdapter.updateMessages(messages)
                 recyclerView.scrollToPosition(messages.size - 1)
             }
+    }
+
+    private fun analyzeEmotion(text: String) {
+        // 긍정적인 단어들
+        val positiveWords = listOf("좋아", "행복", "즐거워", "웃겨", "재밌어", "최고", "사랑해", "감사", "고마워", "응원해", "하하", "ㅋㅋ", "ㅎㅎ")
+        // 부정적인 단어들
+        val negativeWords = listOf("싫어", "화나", "짜증", "힘들어", "슬퍼", "우울", "미워", "실망", "불만", "화나", "ㅠㅠ", "ㅜㅜ", "흑")
+
+        // 텍스트에서 감정 점수 계산
+        var score = 0
+        positiveWords.forEach { word ->
+            if (text.contains(word)) score += 2  // 점수 가중치 증가
+        }
+        negativeWords.forEach { word ->
+            if (text.contains(word)) score -= 2  // 점수 가중치 증가
+        }
+
+        // 감정 점수 업데이트 (최근 메시지의 영향이 더 크도록 가중치 부여)
+        emotionScore = (emotionScore * 0.3 + score * 0.7).toInt()  // 가중치 조정
+        
+        // 감정 상태에 따라 UI 업데이트
+        updateEmotionStatus(emotionScore)
+    }
+
+    private fun updateEmotionStatus(score: Int) {
+        val emotionState = when {
+            score >= 3 -> EmotionState.HAPPY
+            score >= 0 -> EmotionState.NEUTRAL
+            score >= -3 -> EmotionState.SAD
+            else -> EmotionState.ANGRY
+        }
+
+        // UI 업데이트는 메인 스레드에서 실행
+        runOnUiThread {
+            // 감정 텍스트 설정
+            emotionText.text = emotionState.text
+            emotionText.setTextColor(emotionState.backgroundColor)
+            // 감정 원형 색상 설정
+            val circleDrawable = emotionCircle.background as GradientDrawable
+            circleDrawable.setColor(emotionState.backgroundColor)
+            // 감정 텍스트 스타일
+            emotionText.textSize = 16f
+            emotionText.setTypeface(null, android.graphics.Typeface.BOLD)
+        }
     }
 
     private fun sendMessage(text: String) {
