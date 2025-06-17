@@ -155,9 +155,9 @@
     <!-- 외부 화분 -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ivPlant"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="75dp"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="40dp"
         android:visibility="gone"
         app:lottie_fileName="plants/plant01.json"
         app:lottie_autoPlay="false"
@@ -181,25 +181,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:background="@drawable/bt_brown01_rounded"
-        android:src="@drawable/ic_water"
-        android:scaleType="centerInside"
+        android:background="@drawable/bt_water"
         android:padding="12dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/footerBackground"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/btnSunlight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSunlight" />
+        app:layout_constraintTop_toTopOf="@+id/footerBackground" />
 
     <ImageButton
         android:id="@+id/btnSunlight"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:background="@drawable/bt_brown01_rounded"
+        android:background="@drawable/bt_sun"
         android:padding="12dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_sun"
         app:layout_constraintBottom_toBottomOf="@+id/footerBackground"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/btnNutrient"
@@ -212,8 +210,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:background="@drawable/bt_brown01_rounded"
-        android:src="@drawable/ic_nutrient"
+        android:background="@drawable/bt_nutrient"
         android:scaleType="centerInside"
         android:padding="12dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -227,8 +224,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:background="@drawable/bt_brown01_rounded"
-        android:src="@drawable/ic_more"
+        android:background="@drawable/bt_cody"
         android:scaleType="centerInside"
         android:padding="12dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -238,64 +234,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- ✅ 텍스트뷰 영역은 아래에 몰아서 -->
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bmjua"
-        android:gravity="center"
-        android:text="@string/more"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnMore"
-        app:layout_constraintEnd_toEndOf="@+id/btnMore"
-        app:layout_constraintStart_toStartOf="@+id/btnMore"
-        app:layout_constraintTop_toTopOf="@+id/btnMore"
-
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bmjua"
-        android:gravity="center"
-        android:text="@string/nutrient"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnNutrient"
-        app:layout_constraintEnd_toEndOf="@+id/btnNutrient"
-        app:layout_constraintStart_toStartOf="@+id/btnNutrient"
-        app:layout_constraintTop_toTopOf="@+id/btnNutrient"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bmjua"
-        android:gravity="center"
-        android:text="@string/sunlight"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnSunlight"
-        app:layout_constraintEnd_toEndOf="@+id/btnSunlight"
-        app:layout_constraintStart_toStartOf="@+id/btnSunlight"
-        app:layout_constraintTop_toTopOf="@+id/btnSunlight"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bmjua"
-        android:gravity="center"
-        android:text="@string/water"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnWater"
-        app:layout_constraintEnd_toEndOf="@+id/btnWater"
-        app:layout_constraintStart_toStartOf="@+id/btnWater"
-        app:layout_constraintTop_toTopOf="@+id/btnWater"
-        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
