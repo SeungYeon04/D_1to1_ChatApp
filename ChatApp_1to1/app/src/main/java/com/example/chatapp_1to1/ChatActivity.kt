@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import android.view.View.OnClickListener
+import android.widget.LinearLayout
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -209,17 +210,29 @@ class ChatActivity : AppCompatActivity() {
 
     private fun analyzeEmotion(text: String) {
         // 긍정적인 단어들
-        val positiveWords = listOf("좋아", "행복", "즐거워", "웃겨", "재밌어", "최고", "사랑해", "감사", "고마워", "응원해", "하하", "ㅋㅋ", "ㅎㅎ")
+        val positiveWords = listOf(
+            "좋아", "행복", "즐거워", "웃겨", "재밌어", "최고", "사랑", "감사", "고마워", "응원", "하하", "ㅋㅋ", "ㅎㅎ",
+            "멋져", "기뻐", "환상", "축하", "예뻐", "사랑해", "든든해", "대박", "완벽해", "미소", "힐링", "설레", "편안",
+            "잘했어", "착해", "훈훈해", "신나", "기대돼", "감동", "화이팅", "행운", "감격", "의미 있어",
+            "유쾌해", "반가워", "다정해", "따뜻해", "잘 지내", "재밌다", "짱", "존경", "귀여워", "소중", "친절", "천사",
+            "믿음", "기특해", "좋은", "열정", "평화", "선물", "든든", "애기", "여보"
+        )
         // 부정적인 단어들
-        val negativeWords = listOf("싫어", "화나", "짜증", "힘들어", "슬퍼", "우울", "미워", "실망", "불만", "화나", "ㅠㅠ", "ㅜㅜ", "흑")
+        val negativeWords = listOf(
+            "싫어", "화나", "짜증", "힘들", "슬퍼", "우울", "미워", "실망", "불만", "화나", "ㅠㅠ", "ㅜㅜ", "흑",
+            "답답", "무서워", "지쳤", "괴로워", "불안", "눈물", "괴롭", "속상", "외로워", "외롭", "고통", "포기해",
+            "짜증나", "멘붕", "후회돼", "지겹다", "절망", "좌절", "실패", "외면", "비참해", "힘들어", "실수", "무기력", "불쾌",
+            "상처", "좌절", "비난", "지옥", "한숨", "혼란", "허무해", "낙담", "안돼", "나빠", "속상", "죽겠네", "죽고 싶냐",
+            "화났", "눈물", "힘빠져", "억울해", "지치다", "헤어져", "끝이야"
+        )
 
         // 텍스트에서 감정 점수 계산
         var score = 0
         positiveWords.forEach { word ->
-            if (text.contains(word)) score += 2  // 점수 가중치 증가
+            if (text.contains(word)) score += 3  // 점수 가중치 증가
         }
         negativeWords.forEach { word ->
-            if (text.contains(word)) score -= 2  // 점수 가중치 증가
+            if (text.contains(word)) score -= 3  // 점수 가중치 증가
         }
 
         // 감정 점수 업데이트 (최근 메시지의 영향이 더 크도록 가중치 부여)
@@ -232,7 +245,7 @@ class ChatActivity : AppCompatActivity() {
     private fun updateEmotionStatus(score: Int) {
         val emotionState = when {
             score >= 3 -> EmotionState.HAPPY
-            score >= 0 -> EmotionState.NEUTRAL
+            (score >= -1 && score <= 1) -> EmotionState.NEUTRAL
             score >= -3 -> EmotionState.SAD
             else -> EmotionState.ANGRY
         }
