@@ -117,6 +117,7 @@ class ConnectionRequestAdapter(
 
 class ConnectionRequestsActivity : AppCompatActivity() {
 
+    private lateinit var btnclose: TextView
     private lateinit var listView: ListView
     private lateinit var adapter: ConnectionRequestAdapter
     private val requests: MutableList<ConnectionRequest> = mutableListOf()
@@ -135,9 +136,14 @@ class ConnectionRequestsActivity : AppCompatActivity() {
             return
         }
 
+        btnclose = findViewById(R.id.closelist_button)
         listView = findViewById(R.id.request_list)
         adapter = ConnectionRequestAdapter(this, requests)
         listView.adapter = adapter
+
+        btnclose.setOnClickListener {
+            finish()
+        }
 
         loadConnectionRequests()
     }
