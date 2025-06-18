@@ -14,7 +14,9 @@
         android:minHeight="56dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
+
         android:paddingEnd="16dp"
+
         android:paddingBottom="8dp">
 
         <!-- 채팅방 제목 (왼쪽) -->
@@ -35,8 +37,7 @@
         <include
             android:id="@+id/emotionBadge"
             layout="@layout/emotion_badge"
-
-            android:layout_width="wrap_content"
+            android:layout_width="68dp"
             android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="12dp"
