@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import android.view.View.OnClickListener
 import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
+
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -92,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
         emojiButton = findViewById(R.id.emojiButton)
         closeButton = findViewById(R.id.closeButton)
         chatTitle = findViewById(R.id.chatTitle)
-        emotionBadgeLayout = findViewById(R.id.emotionBadge)
+        emotionBadgeLayout = findViewById(R.id.emotionBadgeLayout)
         emotionCircle = findViewById(R.id.emotionCircle)
         emotionText = findViewById(R.id.emotionText)
 
@@ -254,13 +256,15 @@ class ChatActivity : AppCompatActivity() {
         runOnUiThread {
             // 감정 텍스트 설정
             emotionText.text = emotionState.text
-            emotionText.setTextColor(emotionState.backgroundColor)
+            //emotionText.setTextColor(emotionState.backgroundColor) //글자색은 바꿀 필요 없음
             // 감정 원형 색상 설정
             val circleDrawable = emotionCircle.background as GradientDrawable
             circleDrawable.setColor(emotionState.backgroundColor)
             // 감정 텍스트 스타일
             emotionText.textSize = 16f
-            emotionText.setTypeface(null, android.graphics.Typeface.BOLD)
+            emotionText.typeface = ResourcesCompat.getFont(this, R.font.bmjua)
+            emotionText.setTypeface(emotionText.typeface, android.graphics.Typeface.BOLD)
+
         }
     }
 
