@@ -1,5 +1,8 @@
 package com.example.chatapp_1to1
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CodeInputActivity : AppCompatActivity() {
 
+    private lateinit var btnclose: TextView
     private lateinit var myCodeText: TextView
     private lateinit var etCode: EditText
     private lateinit var btnlist: Button
@@ -31,6 +35,7 @@ class CodeInputActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_codeinput)
 
+        btnclose = findViewById(R.id.closecode_button)
         btnlist = findViewById(R.id.list_open_button)
         etCode = findViewById(R.id.etCodeInput)
         btnJoin = findViewById(R.id.btnJoin)
@@ -62,6 +67,13 @@ class CodeInputActivity : AppCompatActivity() {
             myCodeText.text = "로그인이 필요합니다."
         }
 
+        myCodeText.setOnClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", myCodeText.text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "코드가 복사되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+
         btnlist.setOnClickListener {
             val intent = Intent(this, ConnectionRequestsActivity::class.java)
             startActivity(intent)
@@ -74,7 +86,6 @@ class CodeInputActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 현재 로그인한 사용자 정보 확인
             val currentUser = mAuth.currentUser
             if (currentUser == null) {
                 Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
@@ -106,6 +117,11 @@ class CodeInputActivity : AppCompatActivity() {
                             return
                         }
 
+                        if (matchedSnapshot.child("partnerUid").exists()) {
+                            Toast.makeText(this@CodeInputActivity, "해당 사용자는 이미 연결된 상태입니다.", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
                         // 연결 요청 데이터를 Firestore에 저장
                         val requestData = hashMapOf(
                             "senderUid" to currentUid,
@@ -132,6 +148,12 @@ class CodeInputActivity : AppCompatActivity() {
                     Toast.makeText(this@CodeInputActivity, "사용자 검색 중 오류: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        btnclose.setOnClickListener {
+            var Intent = Intent(applicationContext, PlantCareActivity::class.java)
+            startActivity(Intent)
+            finish()
         }
     }
 }

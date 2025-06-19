@@ -40,7 +40,7 @@
 
     <!-- 공식 웹사이트 버튼 -->
 
-    <!-- 기능준비중 버튼 -->
+    <!-- 공식웹사이트, 개발자 커피 사주기☕ 버튼 -->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnOfficialWebsite"
@@ -63,7 +63,7 @@
         android:layout_marginTop="600dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
-        android:text="개발자 커피 사주기☕"
+        android:text="📄앱 정보"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
