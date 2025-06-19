@@ -18,18 +18,17 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
+            android:theme="@style/Theme.ChatApp_1to1.NoActionBar" />
+
+        <activity
+            android:name=".StartActivity"
+            android:exported="true"
             android:theme="@style/Theme.ChatApp_1to1.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- 로그인 후 이동할 메인 화면 -->
-        <activity
-            android:name=".StartActivity"
-            android:exported="true"
-            android:theme="@style/Theme.ChatApp_1to1.NoActionBar" />
 
         <!-- 회원가입 -->
         <activity
