@@ -40,30 +40,30 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var roomId: String
     private lateinit var currentUserUid: String
-    
+
     // 감정 상태를 나타내는 enum class 수정
     private enum class EmotionState(
-        val text: String, 
+        val text: String,
         val backgroundColor: Int,
         val textColor: Int
     ) {
         HAPPY(
-            "신남", 
+            "신남",
             Color.parseColor("#87CEEB"),  // 하늘색 배경
             Color.parseColor("#000080")   // 진한 파란색 글자
         ),
         NEUTRAL(
-            "보통", 
+            "보통",
             Color.parseColor("#D3D3D3"),  // 회색 배경
             Color.parseColor("#000000")   // 검정색 글자
         ),
         SAD(
-            "우울", 
+            "우울",
             Color.parseColor("#00008B"),  // 짙은 파란색 배경
             Color.parseColor("#FFFFFF")   // 흰색 글자
         ),
         ANGRY(
-            "화남", 
+            "화남",
             Color.parseColor("#FF0000"),  // 빨간색 배경
             Color.parseColor("#FFFFFF")   // 흰색 글자
         )
@@ -94,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
         emojiButton = findViewById(R.id.emojiButton)
         closeButton = findViewById(R.id.closeButton)
         chatTitle = findViewById(R.id.chatTitle)
-        emotionBadgeLayout = findViewById(R.id.emotionBadgeLayout)
+        emotionBadgeLayout = findViewById(R.id.emotionBadge)
         emotionCircle = findViewById(R.id.emotionCircle)
         emotionText = findViewById(R.id.emotionText)
 
@@ -139,10 +139,10 @@ class ChatActivity : AppCompatActivity() {
     private fun setupHeader() {
         // 채팅방 제목은 Firestore에서 로드
         loadPartnerInfo()
-        
+
         // 초기 상태 설정
         updateEmotionStatus(0)
-        
+
         // 상태 텍스트 클릭 리스너 추가
         emotionBadgeLayout.setOnClickListener {
             showStatusPopup(it)
@@ -239,7 +239,7 @@ class ChatActivity : AppCompatActivity() {
 
         // 감정 점수 업데이트 (최근 메시지의 영향이 더 크도록 가중치 부여)
         emotionScore = (emotionScore * 0.3 + score * 0.7).toInt()  // 가중치 조정
-        
+
         // 감정 상태에 따라 UI 업데이트
         updateEmotionStatus(emotionScore)
     }
@@ -256,15 +256,14 @@ class ChatActivity : AppCompatActivity() {
         runOnUiThread {
             // 감정 텍스트 설정
             emotionText.text = emotionState.text
-            //emotionText.setTextColor(emotionState.backgroundColor) //글자색은 바꿀 필요 없음
+            //emotionText.setTextColor(emotionState.backgroundColor)
             // 감정 원형 색상 설정
             val circleDrawable = emotionCircle.background as GradientDrawable
             circleDrawable.setColor(emotionState.backgroundColor)
             // 감정 텍스트 스타일
             emotionText.textSize = 16f
+            //emotionText.setTypeface(null, android.graphics.Typeface.BOLD)
             emotionText.typeface = ResourcesCompat.getFont(this, R.font.bmjua)
-            emotionText.setTypeface(emotionText.typeface, android.graphics.Typeface.BOLD)
-
         }
     }
 
