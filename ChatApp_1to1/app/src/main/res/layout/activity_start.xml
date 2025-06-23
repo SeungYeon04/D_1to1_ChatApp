@@ -16,8 +16,8 @@
     <!-- Love Garden Title Image -->
     <ImageView
         android:id="@+id/login_title_image"
-        android:layout_width="wrap_content"
-        android:layout_height="380dp"
+        android:layout_width="334dp"
+        android:layout_height="356dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:contentDescription="Love Garden Title"
@@ -50,7 +50,7 @@
         android:layout_marginTop="500dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
-        android:text="공식 웹사이트"
+        android:text="공식 웹사이트/SNS"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -63,7 +63,7 @@
         android:layout_marginTop="600dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
-        android:text="📄앱 정보"
+        android:text="☕개발자 커피주기"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
