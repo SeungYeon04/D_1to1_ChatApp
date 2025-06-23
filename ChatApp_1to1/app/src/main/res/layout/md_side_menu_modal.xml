@@ -22,10 +22,9 @@
             android:layout_centerVertical="true"
             android:fontFamily="@font/bmjua"
             android:text="카테고리"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-        
+            android:textColor="#F3E6D3"
+            android:textSize="22sp" />
+
         <!-- X 버튼 (오른쪽) -->
         <ImageButton
             android:id="@+id/btnCloseMenu"
@@ -58,9 +57,9 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="13dp"
             android:text="계정"
-            android:textColor="#FFFFFF"
+            android:textColor="#FFF7EC"
             android:textSize="24sp" />
 
         <TextView
@@ -70,7 +69,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="10dp"
             android:text="로그아웃"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
@@ -83,12 +82,18 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="10dp"
             android:text="탈퇴하기"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
-        <!-- 애정보 -->
+        <!-- 여백용 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="1dp" />
+
+        <!-- 앱정보 텍스트 -->
         <TextView
             android:id="@+id/menuAffection"
             android:layout_width="match_parent"
@@ -96,9 +101,9 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="13dp"
             android:text="앱정보"
-            android:textColor="#FFFFFF"
+            android:textColor="#FFF7EC"
             android:textSize="24sp" />
 
         <!-- 이용약관 -->
@@ -109,7 +114,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="10dp"
             android:text="이용약관"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
@@ -122,7 +127,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:fontFamily="@font/bmjua"
             android:paddingHorizontal="4dp"
-            android:paddingVertical="18dp"
+            android:paddingVertical="10dp"
             android:text="개인정보처리방침"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
