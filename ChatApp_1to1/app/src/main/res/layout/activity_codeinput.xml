@@ -15,19 +15,6 @@
         android:background="#7F6C5E"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 메뉴 버튼 (왼쪽) -->
-    <ImageButton
-        android:id="@+id/btnMenu"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/menu"
-        android:src="@drawable/ic_menu"
-        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/headerBackground" />
-
     <!-- 말풍선 이미지 (오른쪽) -->
 
     <ImageView
