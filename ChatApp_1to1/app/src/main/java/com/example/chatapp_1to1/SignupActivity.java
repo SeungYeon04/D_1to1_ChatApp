@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CheckBox;
+import android.net.Uri;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,10 +32,35 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
 
+    private
+    CheckBox checkPrivacy;
+    private CheckBox checkTerms;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        TextView linkPrivacy = findViewById(R.id.linkPrivacy);
+        TextView linkTerms = findViewById(R.id.linkTerms);
+
+        //동의링크
+        linkPrivacy.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://example.com/privacy")); // 실제 개인정보처리방침 URL로 교체
+            startActivity(intent);
+        });
+
+        linkTerms.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://example.com/terms")); // 실제 이용약관 URL로 교체
+            startActivity(intent);
+        });
+
+        // 체크박스
+        checkPrivacy = findViewById(R.id.checkPrivacy);
+        checkTerms = findViewById(R.id.checkTerms);
 
         signupTextId = findViewById(R.id.SignupTextId);
         signupPassword = findViewById(R.id.SignupPassword);
@@ -72,10 +100,15 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 회원가입 처리
-                String name = signupTextName.getText().toString();
-                String id = signupTextId.getText().toString();
-                String password = signupPassword.getText().toString();
-                
+                String name = signupTextName.getText().toString().trim();
+                String id = signupTextId.getText().toString().trim();
+                String password = signupPassword.getText().toString().trim();
+
+                if (!checkPrivacy.isChecked() || !checkTerms.isChecked()) {
+                    Toast.makeText(SignupActivity.this, "약관에 모두 동의해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (id.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignupActivity.this, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
                     return;
