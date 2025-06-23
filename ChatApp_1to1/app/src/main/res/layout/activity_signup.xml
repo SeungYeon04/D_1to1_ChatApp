@@ -45,18 +45,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.2"
-        android:orientation="vertical"
+        android:background="#FEF6E6"
         android:gravity="center"
+        android:orientation="vertical"
         android:paddingStart="24dp"
-        android:paddingEnd="24dp"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:background="#FEF6E6">
+        android:paddingEnd="24dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/bmjua"
             android:gravity="center"
             android:text="SignUp"
@@ -129,7 +129,7 @@
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="47dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/edit_bg_rounded"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -162,9 +162,51 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/ic_visibility_off"
-                android:contentDescription="비밀번호 표시/숨김" />
+                android:contentDescription="비밀번호 표시/숨김"
+                android:src="@drawable/ic_visibility_off" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkPrivacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#B0B0B0" />
+
+            <TextView
+                android:id="@+id/linkPrivacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:paddingStart="4dp"
+                android:text="개인정보처리방침"
+                android:textColor="#B0B0B0"
+                android:textSize="13sp" />
+
+            <CheckBox
+                android:id="@+id/checkTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:buttonTint="#B0B0B0" />
+
+            <TextView
+                android:id="@+id/linkTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:paddingStart="4dp"
+                android:text="이용약관동의"
+                android:textColor="#B0B0B0"
+                android:textSize="13sp" />
+        </LinearLayout>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSignup"
@@ -182,12 +224,13 @@
             android:id="@+id/login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이미 계정이 있으신가요? 로그인"
-            android:textColor="#F5BFCB"
-            android:textSize="14sp"
             android:layout_gravity="center"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            android:fontFamily="@font/bmjua"
+            android:text="이미 계정이 있으신가요? 로그인"
+            android:textColor="#F5BFCB"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

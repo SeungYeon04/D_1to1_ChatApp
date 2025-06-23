@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlantCareActivity">
+
+    <!-- 메인 콘텐츠 영역 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <!-- 상단 헤더 - 녹색 배경 -->
     <View
@@ -14,15 +20,16 @@
         android:background="#7F6C5E"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 메뉴 버튼 (왼쪽) -->
+    <!-- 햄버거 메뉴 버튼 (왼쪽) -->
     <ImageButton
         android:id="@+id/btnMenu"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/menu"
-        android:src="@drawable/ic_menu"
+        android:contentDescription="햄버거 메뉴"
+        android:src="@drawable/ic_hamburger_menu"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/headerBackground" />
@@ -235,5 +242,13 @@
 
     <!-- ✅ 텍스트뷰 영역은 아래에 몰아서 -->
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 사이드 메뉴 (DrawerLayout의 두 번째 자식) -->
+    <include
+        layout="@layout/md_side_menu_modal"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

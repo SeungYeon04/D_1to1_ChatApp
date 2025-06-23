@@ -20,6 +20,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
+import com.google.firebase.Timestamp
 
 
 //와이파이 관련
@@ -40,9 +43,14 @@ fun Context.isInternetAvailable(): Boolean {
 
 class PlantCareActivity : AppCompatActivity() {
 
+    private lateinit var drawerLayout: DrawerLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plant_care)
+
+        // DrawerLayout 초기화
+        drawerLayout = findViewById(R.id.drawerLayout)
 
         findViewById<ImageView>(R.id.ivSpeechBubble).setOnClickListener {
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -72,9 +80,13 @@ class PlantCareActivity : AppCompatActivity() {
         }
 
 
+        // 햄버거 메뉴 버튼 클릭 시 사이드 메뉴 열기
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
-            showLogoutDialog(this)
+            drawerLayout.openDrawer(GravityCompat.START)
         }
+
+        // 사이드 메뉴 항목들 클릭 리스너 설정
+        setupSideMenuListeners()
 
         findUserRoomAndRender() // 🔥 핵심 로직
     }
@@ -277,21 +289,130 @@ class PlantCareActivity : AppCompatActivity() {
 
     }
 
-    fun PlantCareActivity.showLogoutDialog(activity: PlantCareActivity) {
-        AlertDialog.Builder(activity)
+    private fun setupSideMenuListeners() {
+        // 사이드 메뉴 닫기 버튼
+        findViewById<ImageButton>(R.id.btnCloseMenu).setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        // 로그아웃 메뉴
+        findViewById<TextView>(R.id.menuLogout).setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            // 로그아웃 다이얼로그 호출
+            showLogoutDialog()
+        }
+
+        // 탈퇴하기 메뉴
+        findViewById<TextView>(R.id.menuDeleteAccount).setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            // 탈퇴 확인 다이얼로그 호출
+            showDeleteAccountDialog()
+        }
+
+
+        // 이용약관 메뉴
+        findViewById<TextView>(R.id.menuTerms).setOnClickListener {
+            Toast.makeText(this, "이용약관 기능은 추후 구현 예정입니다.", Toast.LENGTH_SHORT).show()
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        // 개인정보처리방침 메뉴
+        findViewById<TextView>(R.id.menuPrivacyPolicy).setOnClickListener {
+            Toast.makeText(this, "개인정보처리방침 기능은 추후 구현 예정입니다.", Toast.LENGTH_SHORT).show()
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this)
             .setTitle("로그아웃")
             .setMessage("정말 로그아웃 하시겠습니까?")
             .setPositiveButton("네") { dialog, _ ->
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(activity, LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                activity.startActivity(intent)
-                activity.finish()
+                this.startActivity(intent)
+                this.finish()
             }
             .setNegativeButton("아니요") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
             .show()
+    }
+
+    private fun showDeleteAccountDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("회원 탈퇴")
+            .setMessage("정말 탈퇴하시겠습니까?\n\n탈퇴 시 모든 데이터가 삭제되며, 복구할 수 없습니다.")
+            .setPositiveButton("탈퇴하기") { dialog, _ ->
+                dialog.dismiss()
+                deleteUserAccount()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun deleteUserAccount() {
+        // 1. 유저 확인 및 UID 가져오기
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val uid = currentUser.uid
+        
+        // 로딩 표시
+        Toast.makeText(this, "계정 삭제 중...", Toast.LENGTH_SHORT).show()
+
+        // 2. Firestore 인스턴스 가져오기
+        val db = FirebaseFirestore.getInstance()
+        val realtimeDb = FirebaseDatabase.getInstance()
+
+        // 3. 탈퇴 로그 기록용 데이터 준비
+        val deleteLog = hashMapOf(
+            "uid" to uid,
+            "deletedAt" to Timestamp.now()
+        )
+
+        // 4. Firestore에서 사용자 데이터 삭제 (순차적으로 진행)
+        db.collection("users").document(uid).delete()
+            .addOnSuccessListener {
+                // 5. Realtime Database에서 사용자 데이터 삭제
+                realtimeDb.getReference("users").child(uid).removeValue()
+                    .addOnSuccessListener {
+                        // 6. 탈퇴 로그 기록
+                        db.collection("deleted_users").document(uid).set(deleteLog)
+                            .addOnSuccessListener {
+                                // 7. Firebase Auth 계정 삭제 (마지막에 실행)
+                                currentUser.delete()
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "회원 탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                                        
+                                        // 8. LoginActivity로 이동
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "계정 삭제 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(this, "탈퇴 로그 기록 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "실시간 데이터베이스 삭제 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "사용자 데이터 삭제 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

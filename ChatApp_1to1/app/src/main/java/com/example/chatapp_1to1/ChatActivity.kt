@@ -196,13 +196,24 @@ class ChatActivity : AppCompatActivity() {
                 }
 
                 val messages = mutableListOf<ChatMessage>()
+                
+                // 새로운 메시지만 감지하여 감정 분석 수행
+                snapshot?.documentChanges?.forEach { change ->
+                    if (change.type == com.google.firebase.firestore.DocumentChange.Type.ADDED) {
+                        change.document.toObject(ChatMessage::class.java)?.let { message ->
+                            // 상대방의 새로운 메시지인 경우에만 감정 분석 수행
+                            if (message.senderUid != currentUserUid) {
+                                android.util.Log.d("EmotionDebug", "새로운 상대방 메시지 감지: ${message.text}")
+                                analyzeEmotion(message.text)
+                            }
+                        }
+                    }
+                }
+                
+                // 전체 메시지 목록 업데이트
                 snapshot?.documents?.forEach { doc ->
                     doc.toObject(ChatMessage::class.java)?.let { message ->
                         messages.add(message)
-                        // 상대방의 메시지인 경우에만 감정 분석 수행
-                        if (message.senderUid != currentUserUid) {
-                            analyzeEmotion(message.text)
-                        }
                     }
                 }
                 chatAdapter.updateMessages(messages)
@@ -217,28 +228,60 @@ class ChatActivity : AppCompatActivity() {
             "멋져", "기뻐", "환상", "축하", "예뻐", "사랑해", "든든해", "대박", "완벽해", "미소", "힐링", "설레", "편안",
             "잘했어", "착해", "훈훈해", "신나", "기대돼", "감동", "화이팅", "행운", "감격", "의미 있어",
             "유쾌해", "반가워", "다정해", "따뜻해", "잘 지내", "재밌다", "짱", "존경", "귀여워", "소중", "친절", "천사",
-            "믿음", "기특해", "좋은", "열정", "평화", "선물", "든든", "애기", "여보"
+            "믿음", "기특해", "좋은", "열정", "평화", "선물", "애기", "여보"
         )
-        // 부정적인 단어들
+        // 부정적인 단어들 (중복 제거됨)
         val negativeWords = listOf(
-            "싫어", "화나", "짜증", "힘들", "슬퍼", "우울", "미워", "실망", "불만", "화나", "ㅠㅠ", "ㅜㅜ", "흑",
+            "싫어", "화나", "짜증", "힘들", "슬퍼", "우울", "미워", "실망", "불만", "ㅠㅠ", "ㅜㅜ", "흑",
             "답답", "무서워", "지쳤", "괴로워", "불안", "눈물", "괴롭", "속상", "외로워", "외롭", "고통", "포기해",
-            "짜증나", "멘붕", "후회돼", "지겹다", "절망", "좌절", "실패", "외면", "비참해", "힘들어", "실수", "무기력", "불쾌",
-            "상처", "좌절", "비난", "지옥", "한숨", "혼란", "허무해", "낙담", "안돼", "나빠", "속상", "죽겠네", "죽고 싶냐",
-            "화났", "눈물", "힘빠져", "억울해", "지치다", "헤어져", "끝이야"
+            "멘붕", "후회돼", "지겹다", "절망", "좌절", "실패", "외면", "비참해", "실수", "무기력", "불쾌",
+            "상처", "비난", "지옥", "한숨", "혼란", "허무해", "낙담", "안돼", "나빠", "죽겠네", "죽고 싶냐",
+            "화났", "힘빠져", "억울해", "지치다", "헤어져", "끝이야"
         )
+
+        // 초기화 단어 체크 (테스트용)
+        val resetWords = listOf("초기화", "리셋", "처음으로", "원점", "다시")
+        var shouldReset = false
+        resetWords.forEach { word ->
+            if (text.contains(word)) {
+                shouldReset = true
+                return@forEach
+            }
+        }
+
+        if (shouldReset) {
+            emotionScore = 0
+            updateEmotionStatus(emotionScore)
+            return
+        }
 
         // 텍스트에서 감정 점수 계산
         var score = 0
+        var positiveCount = 0
+        var negativeCount = 0
+        
         positiveWords.forEach { word ->
-            if (text.contains(word)) score += 3  // 점수 가중치 증가
+            // 단어가 텍스트에 몇 번 나오는지 카운트 (정확한 문자열 매칭)
+            val count = text.split(word).size - 1
+            if (count > 0) {
+                positiveCount += count
+                score += count
+            }
         }
         negativeWords.forEach { word ->
-            if (text.contains(word)) score -= 3  // 점수 가중치 증가
+            // 단어가 텍스트에 몇 번 나오는지 카운트 (정확한 문자열 매칭)
+            val count = text.split(word).size - 1
+            if (count > 0) {
+                negativeCount += count
+                score -= count
+            }
         }
+        
+        // 디버그 로그 (일시적으로 Toast 추가)
+        android.util.Log.d("EmotionDebug", "메시지: '$text', 긍정: $positiveCount, 부정: $negativeCount, 최종스코어: $score, 누적스코어: ${emotionScore + score}")
 
-        // 감정 점수 업데이트 (최근 메시지의 영향이 더 크도록 가중치 부여)
-        emotionScore = (emotionScore * 0.3 + score * 0.7).toInt()  // 가중치 조정
+        // 감정 점수 단순 누적 (시연용)
+        emotionScore += score
 
         // 감정 상태에 따라 UI 업데이트
         updateEmotionStatus(emotionScore)
@@ -246,16 +289,16 @@ class ChatActivity : AppCompatActivity() {
 
     private fun updateEmotionStatus(score: Int) {
         val emotionState = when {
-            score >= 3 -> EmotionState.HAPPY
-            (score >= -1 && score <= 1) -> EmotionState.NEUTRAL
-            score >= -3 -> EmotionState.SAD
-            else -> EmotionState.ANGRY
+            score >= 2 -> EmotionState.HAPPY      // 긍정 단어 2개 이상
+            score in -1..1 -> EmotionState.NEUTRAL // -1~1 범위 (NEUTRAL 유지)
+            score >= -3 -> EmotionState.SAD       // 부정 단어 2~3개 (-2, -3)
+            else -> EmotionState.ANGRY            // 부정 단어 4개 이상 (-4 이하)
         }
 
         // UI 업데이트는 메인 스레드에서 실행
         runOnUiThread {
-            // 감정 텍스트 설정
-            emotionText.text = emotionState.text
+            // 감정 텍스트 설정 (스코어 포함)
+            emotionText.text = "${emotionState.text} (${score})"
             //emotionText.setTextColor(emotionState.backgroundColor)
             // 감정 원형 색상 설정
             val circleDrawable = emotionCircle.background as GradientDrawable
