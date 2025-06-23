@@ -37,7 +37,7 @@
         <include
             android:id="@+id/emotionBadge"
             layout="@layout/emotion_badge"
-            android:layout_width="68dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="12dp"
