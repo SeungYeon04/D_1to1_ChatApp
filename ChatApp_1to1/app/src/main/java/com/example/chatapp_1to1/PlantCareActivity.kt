@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.google.firebase.Timestamp
+import android.net.Uri
 
 
 //와이파이 관련
@@ -312,14 +313,14 @@ class PlantCareActivity : AppCompatActivity() {
 
         // 이용약관 메뉴
         findViewById<TextView>(R.id.menuTerms).setOnClickListener {
-            Toast.makeText(this, "이용약관 기능은 추후 구현 예정입니다.", Toast.LENGTH_SHORT).show()
             drawerLayout.closeDrawer(GravityCompat.START)
+            showPolicyDialog("이용약관", "https://veiled-seed-36c.notion.site/214a7f300f09801ab4defb16ac2f2fc8")
         }
 
         // 개인정보처리방침 메뉴
         findViewById<TextView>(R.id.menuPrivacyPolicy).setOnClickListener {
-            Toast.makeText(this, "개인정보처리방침 기능은 추후 구현 예정입니다.", Toast.LENGTH_SHORT).show()
             drawerLayout.closeDrawer(GravityCompat.START)
+            showPolicyDialog("개인정보처리방침", "https://veiled-seed-36c.notion.site/Privacy-Policy-214a7f300f0980cc9af8e7486d12bc4c")
         }
     }
 
@@ -355,6 +356,20 @@ class PlantCareActivity : AppCompatActivity() {
             .create()
             .show()
     }
+
+    // 약관확인 웹 다이얼로그
+    fun showPolicyDialog(title: String, url: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage("웹사이트로 이동할까요?")
+            .setPositiveButton("이동") { _, _ ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            }
+            .setNegativeButton("취소", null)
+            .show()
+    }
+
 
     private fun deleteUserAccount() {
         // 1. 유저 확인 및 UID 가져오기

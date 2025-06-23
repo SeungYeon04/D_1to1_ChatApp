@@ -48,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         //동의링크
         linkPrivacy.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://veiled-seed-36c.notion.site/214a7f300f09801ab4defb16ac2f2fc8")); // 실제 개인정보처리방침 URL로 교체
+            intent.setData(Uri.parse("https://veiled-seed-36c.notion.site/Privacy-Policy-214a7f300f0980cc9af8e7486d12bc4c")); // 실제 개인정보처리방침 URL로 교체
             startActivity(intent);
         });
 

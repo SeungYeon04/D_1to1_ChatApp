@@ -115,17 +115,17 @@
             android:elevation="1dp" />
     </FrameLayout>
 
-    <!-- 애니 -->
+    <!-- 아이템 애니메이션 -->
     <ImageView
         android:id="@+id/ivEffect"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="130dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="450dp"
         android:visibility="gone"
         android:src="@drawable/water_item"
-    app:layout_constraintBottom_toTopOf="@+id/footerBackground"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/footerBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <!-- 하단 푸터 - 배경 -->
