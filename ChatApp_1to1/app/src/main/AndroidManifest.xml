@@ -61,6 +61,10 @@
             android:name=".ConnectionRequestsActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".QuestListActivity"
+            android:exported="true" />
+
 
     </application>
 

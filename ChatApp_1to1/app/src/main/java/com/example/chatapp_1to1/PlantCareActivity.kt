@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.airbnb.lottie.LottieAnimationView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,8 +32,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
-import com.google.firebase.Timestamp
-import android.net.Uri
 
 
 //와이파이 관련
@@ -84,6 +84,10 @@ class PlantCareActivity : AppCompatActivity() {
         // 햄버거 메뉴 버튼 클릭 시 사이드 메뉴 열기
         findViewById<ImageView>(R.id.btnMenu).setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        findViewById<ImageView>(R.id.btnQuestList).setOnClickListener{
+            startActivity(Intent(this@PlantCareActivity, QuestListActivity::class.java))
         }
 
         // 사이드 메뉴 항목들 클릭 리스너 설정

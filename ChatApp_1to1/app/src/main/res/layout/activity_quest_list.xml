@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_send"
+    tools:context=".CodeInputActivity">
+
+    <!-- 상단 헤더 - 녹색 배경 -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#7F6C5E"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 말풍선 이미지 (오른쪽) -->
+
+    <ImageView
+        android:id="@+id/ivSpeechBubble"
+        android:layout_width="39dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="말풍선"
+        android:src="@drawable/ic_speech_bubble"
+        app:layout_constraintBottom_toBottomOf="@+id/headerBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerBackground"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RelativeLayout
+        android:id="@+id/codeInputBox"
+        android:layout_width="369dp"
+        android:layout_height="278dp"
+        android:background="@drawable/bt_brown01_rounded"
+        android:clipToPadding="false"
+        android:elevation="4dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 닫기 버튼 (X) -->
+
+
+        <TextView
+            android:id="@+id/closequest_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="34dp"
+            android:layout_marginRight="8dp"
+            android:text="X"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/enter_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/closequest_button"
+            android:layout_marginTop="-28dp"
+            android:text="퀘스트 목록"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_code_text"
+            android:layout_alignBottom="@+id/enter_code_text"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="-75dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <!-- 퀘스트 이름 -->
+            <TextView
+                android:id="@+id/request_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:text="상대에게 '사랑해' 보내기"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/get_button"
+                android:layout_width="78dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/login_btn_bg"
+                android:fontFamily="@font/bmjua"
+                android:text="받기"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
