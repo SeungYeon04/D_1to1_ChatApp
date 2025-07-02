@@ -1,8 +1,9 @@
 package com.example.chatapp_1to1
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -11,19 +12,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import android.view.View.OnClickListener
-import android.widget.LinearLayout
-import androidx.core.content.res.ResourcesCompat
 
 
 class ChatActivity : AppCompatActivity() {
@@ -118,6 +118,9 @@ class ChatActivity : AppCompatActivity() {
             val messageText = messageInput.text.toString().trim()
             if (messageText.isNotEmpty()) {
                 sendMessage(messageText)
+                if (messageText.contains("사랑해")) {
+                    completeQuest()
+                }
                 messageInput.text.clear()
             }
         }
@@ -146,6 +149,16 @@ class ChatActivity : AppCompatActivity() {
         // 상태 텍스트 클릭 리스너 추가
         emotionBadgeLayout.setOnClickListener {
             showStatusPopup(it)
+        }
+    }
+
+    private fun completeQuest() {
+        Toast.makeText(this, "'사랑해' 보내기 퀘스트 완료!", Toast.LENGTH_SHORT).show()
+        val prefs = getSharedPreferences("questPrefs", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("quest_love_done", false)) {
+            prefs.edit()
+                .putBoolean("quest_love_done", true)
+                .apply()
         }
     }
 
