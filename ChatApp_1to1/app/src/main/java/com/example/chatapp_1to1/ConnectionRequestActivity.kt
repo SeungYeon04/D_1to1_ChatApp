@@ -247,19 +247,19 @@ object RoomCreator {
                         usersMap[receiverUid] = receiverInfo
                         roomData["users"] = usersMap
 
-                        //item 및 plant 필드를 구성
+                        //item 및 plant 필드를 구성 . 아래는 첫스타트 데이터
                         roomData["item"] = hashMapOf(
                             "codyitem" to hashMapOf(
                                 "myitem" to false,
                                 "price" to 100
                             ),
-                            "healthitem" to 0,
-                            "lightitem" to 0,
-                            "wateritem" to 0
+                            "healthitem" to 5,
+                            "lightitem" to 10,
+                            "wateritem" to 10
                         )
                         roomData["plant"] = hashMapOf(
-                            "experience" to 15,
-                            "money" to 10
+                            "experience" to 0,
+                            "money" to 1000
                         )
 
                         // Firestore "rooms" 컬렉션에 채팅방 생성

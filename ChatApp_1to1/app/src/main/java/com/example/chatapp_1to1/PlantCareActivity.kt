@@ -130,7 +130,11 @@ class PlantCareActivity : AppCompatActivity() {
                     }
 
                     findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
-                        showItemModal(foundRoomId, R.drawable.nutrient_item, "item.codyitem", isCody = true)
+                        AlertDialog.Builder(this@PlantCareActivity)
+                            .setTitle("코디 기능 준비 중")
+                            .setMessage("코디 기능은 현재 준비 중입니다.")
+                            .setPositiveButton("확인", null)
+                            .show()
                     }
                 } else {
                     Toast.makeText(this@PlantCareActivity, "해당 유저에 연결된 방 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
@@ -155,12 +159,16 @@ class PlantCareActivity : AppCompatActivity() {
 
                     // 🔥 경험치 → 애니메이션 프레임 위치 지정
                     val frame = when {
-                        exp < 3 -> 20
-                        exp < 5 -> 40
-                        exp < 10 -> 60
-                        exp < 20 -> 90
-                        exp < 30 -> 120
-                        else -> 144
+                        exp < 10 -> 5
+                        exp < 20 -> 10
+                        exp < 30 -> 15
+                        exp < 40 -> 20
+                        exp < 50 -> 25
+                        exp < 60 -> 30
+                        exp < 70 -> 35
+                        exp < 80 -> 40
+                        else -> 45
+                        //else -> 144
                     }
 
                     plantAnimView.setAnimation("plants/plant01.json")
@@ -259,6 +267,7 @@ class PlantCareActivity : AppCompatActivity() {
             roomRef.get(Source.SERVER)
                 .addOnSuccessListener { snapshot ->
                     if (isCody) {
+
                         // 기존 코디 아이템 UI 갱신
                         val codyMap = snapshot.get(firebasePath) as? Map<*, *>
                         if (codyMap != null) {
@@ -274,6 +283,7 @@ class PlantCareActivity : AppCompatActivity() {
                         } else {
                             itemText.text = "코디 아이템 없음"
                         }
+
                     } else {
                         // 기존 아이템 수량 텍스트
                         val count = (snapshot.getLong(firebasePath) ?: return@addOnSuccessListener).toInt()

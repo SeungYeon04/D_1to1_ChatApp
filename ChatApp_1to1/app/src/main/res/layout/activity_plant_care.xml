@@ -65,14 +65,18 @@
             app:layout_constraintTop_toBottomOf="@+id/headerBackground"
             app:layout_constraintVertical_bias="0.0" />
 
+
+        <!-- app:srcCompat="@drawable/ic_quest" -->
+
         <ImageView
             android:id="@+id/btnQuestList"
-            android:layout_width="55dp"
-            android:layout_height="62dp"
+            android:src="@drawable/ic_quest01"
+            android:layout_width="60dp"
+            android:layout_height="55dp"
             app:layout_constraintBottom_toTopOf="@+id/windowFrame"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/windowFrame"
-            app:srcCompat="@drawable/ic_quest" />
+            />
 
         <FrameLayout
         android:id="@+id/windowFrame"

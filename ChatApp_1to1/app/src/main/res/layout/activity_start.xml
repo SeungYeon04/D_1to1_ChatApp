@@ -50,7 +50,7 @@
         android:layout_marginTop="500dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
-        android:text="공식 웹사이트/SNS"
+        android:text="준비중"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -63,7 +63,7 @@
         android:layout_marginTop="600dp"
         android:background="@drawable/login_btn_bg"
         android:fontFamily="@font/bmjua"
-        android:text="☕개발자 커피주기"
+        android:text="준비중"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold" />
