@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.chatapp_1to1"
+    namespace = "com.mycompany.lovegarden"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.chatapp_1to1"
+        applicationId = "com.mycompany.lovegarden"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlantCareActivity">
+    tools:context="com.mycompany.lovegarden.PlantCareActivity">
 
     <!-- 메인 콘텐츠 영역 -->
     <androidx.constraintlayout.widget.ConstraintLayout

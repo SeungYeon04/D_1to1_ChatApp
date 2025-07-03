@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_send"
-    tools:context=".CodeInputActivity">
+    tools:context="com.mycompany.lovegarden.CodeInputActivity">
 
     <!-- 상단 헤더 - 녹색 배경 -->
     <View
