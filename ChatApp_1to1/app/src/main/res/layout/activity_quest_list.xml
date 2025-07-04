@@ -90,6 +90,7 @@
                 android:fontFamily="@font/bmjua"
                 android:text="상대에게 '사랑해' 보내기"
                 android:textSize="22sp"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -115,6 +116,7 @@
             android:padding="10dp"
             android:text="보상: 영양제 1개 (상시미션으로, 한 번 성공마다 받기 버튼을 눌러주셔야 합니다.)"
             android:textSize="10sp"
+            android:textColor="#F0F0F0"
             android:textStyle="bold" />
 
     </RelativeLayout>
